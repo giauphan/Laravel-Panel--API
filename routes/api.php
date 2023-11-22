@@ -2,10 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use Laravel\Passport\Http\Controllers\AccessTokenController;
-use Laravel\Passport\Http\Controllers\AuthorizationController;
-use Illuminate\Support\Facades\Http;
-use Illuminate\Support\Str;
+
 /*
 |--------------------------------------------------------------------------
 | API Routes
