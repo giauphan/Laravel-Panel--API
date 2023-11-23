@@ -2,17 +2,17 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\RoleResource\Pages;
-use App\Models\Role;
+use App\Filament\Resources\MultiDatabaseResource\Pages;
+use App\Models\MultiDatabase;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
 
-class RoleResource extends Resource
+class MultiDatabaseResource extends Resource
 {
-    protected static ?string $model = Role::class;
+    protected static ?string $model = MultiDatabase::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
@@ -20,12 +20,21 @@ class RoleResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('name')
+                Forms\Components\TextInput::make('host')
                     ->required()
-                    ->unique(ignoreRecord: true)
                     ->maxLength(255),
-                Forms\Components\TextInput::make('guard_name')
+                Forms\Components\TextInput::make('database')
                     ->required()
+
+                    ->maxLength(255),
+                Forms\Components\TextInput::make('port')
+                    ->required()
+                    ->maxLength(255),
+                Forms\Components\TextInput::make('username')
+                    ->required()
+                    ->maxLength(255),
+                Forms\Components\TextInput::make('password')
+                    ->password()
                     ->maxLength(255),
             ]);
     }
@@ -34,9 +43,13 @@ class RoleResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('name')
+                Tables\Columns\TextColumn::make('host')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('guard_name')
+                Tables\Columns\TextColumn::make('database')
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('port')
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('username')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
@@ -70,9 +83,9 @@ class RoleResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListRoles::route('/'),
-            'create' => Pages\CreateRole::route('/create'),
-            'edit' => Pages\EditRole::route('/{record}/edit'),
+            'index' => Pages\ListMultiDatabases::route('/'),
+            'create' => Pages\CreateMultiDatabase::route('/create'),
+            'edit' => Pages\EditMultiDatabase::route('/{record}/edit'),
         ];
     }
 }

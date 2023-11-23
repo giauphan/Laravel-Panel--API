@@ -28,5 +28,12 @@ class AuthServiceProvider extends ServiceProvider
             return config('app.frontend_url')."/password-reset/$token?email={$notifiable->getEmailForPasswordReset()}";
         });
         Passport::hashClientSecrets();
+
+        Passport::tokensCan([
+            'place-file-upload' => 'Place file-upload',
+            'check-status' => 'Check file-upload status',
+        ]);
+        Passport::tokensExpireIn(now()->addHours(6));
+
     }
 }

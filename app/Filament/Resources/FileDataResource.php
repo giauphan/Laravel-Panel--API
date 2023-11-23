@@ -2,17 +2,18 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\RoleResource\Pages;
-use App\Models\Role;
+use App\Filament\Resources\FileDataResource\Pages;
+use App\Models\FileData;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Illuminate\Support\Facades\Hash;
 
-class RoleResource extends Resource
+class FileDataResource extends Resource
 {
-    protected static ?string $model = Role::class;
+    protected static ?string $model = FileData::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
@@ -20,13 +21,23 @@ class RoleResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('name')
+                Forms\Components\TextInput::make('business_code')
                     ->required()
-                    ->unique(ignoreRecord: true)
-                    ->maxLength(255),
-                Forms\Components\TextInput::make('guard_name')
+                    ->unique(ignoreRecord: true),
+                Forms\Components\TextInput::make('type_data')
                     ->required()
                     ->maxLength(255),
+                Forms\Components\Textarea::make('has_business_code')
+                    ->required()
+                    ->dehydrateStateUsing(fn ($state) => Hash::make($state))
+                    ->maxLength(65535)
+                    ->columnSpanFull(),
+                Forms\Components\Textarea::make('Data')
+                    ->required()
+                    ->dehydrateStateUsing(fn ($state) => base64_encode($state))
+                    ->maxLength(16777215)
+                    ->columnSpanFull(),
+
             ]);
     }
 
@@ -34,9 +45,9 @@ class RoleResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('name')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('guard_name')
+                Tables\Columns\TextColumn::make('business_code')
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('type_data')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
@@ -70,9 +81,9 @@ class RoleResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListRoles::route('/'),
-            'create' => Pages\CreateRole::route('/create'),
-            'edit' => Pages\EditRole::route('/{record}/edit'),
+            'index' => Pages\ListFileData::route('/'),
+            'create' => Pages\CreateFileData::route('/create'),
+            'edit' => Pages\EditFileData::route('/{record}/edit'),
         ];
     }
 }
