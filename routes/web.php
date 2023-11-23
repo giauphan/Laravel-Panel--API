@@ -18,4 +18,4 @@ Route::get('/', function () {
     return [];
 })->name('login');
 
-Route::get('/preview', [PreviewController::class, '__invoke'])->name('preview');
+Route::get('/preview', [PreviewController::class, 'index'])->name('preview');

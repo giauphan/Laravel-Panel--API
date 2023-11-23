@@ -11,26 +11,18 @@ use Illuminate\Support\Facades\Response;
 
 class PreviewController extends Controller
 {
-    public function __invoke(Request $request)
+    public function index(Request $request)
     {
+
         if ($request->has('id')) {
-            $file = null;
             $id = $request->input('id');
-            if ($request->has('DatabaseID')) {
-                $migration = MultiDatabase::findOrFail($request->input('DatabaseID'));
-                MultiMigrationService::switchToMulti($migration);
-                $file = FileData::query()
-                    ->where('has_business_code', 'like', "%$id%")->firstOrFail();
-                MultiMigrationService::disconnectFromMulti();
-            } else {
-                $file = FileData::query()
-                    ->where('has_business_code', 'like', "%$id%")->firstOrFail();
-            }
+            $file = $this->findFileById($request, $id);
+
             if ($file) {
                 $decodedData = base64_decode($file->DataBcdn);
-                $filename = ! empty($file->business_code) ? $file->business_code : $file->has_business_code;
+                $filename = $this->getFilename($file);
                 $response = Response::make($decodedData, 200);
-                $response->header('Content-Disposition', "attachment; filename= $filename.$file->type_data");
+                $response->header('Content-Disposition', "attachment; filename=$filename.$file->type_data");
                 $response->header('Content-Type', 'application/pdf');
 
                 return $response;
@@ -38,5 +30,26 @@ class PreviewController extends Controller
 
             return abort(404);
         }
+    }
+
+    private function findFileById(Request $request, $id)
+    {
+        $fileQuery = FileData::query()->where('has_business_code', 'like', "%$id%");
+
+        if ($request->has('DatabaseID')) {
+            $migration = MultiDatabase::findOrFail($request->input('DatabaseID'));
+            MultiMigrationService::switchToMulti($migration);
+            $file = $fileQuery->firstOrFail();
+            MultiMigrationService::disconnectFromMulti();
+        } else {
+            $file = $fileQuery->firstOrFail();
+        }
+
+        return $file;
+    }
+
+    private function getFilename($file)
+    {
+        return ! empty($file->business_code) ? $file->business_code : $file->has_business_code;
     }
 }
