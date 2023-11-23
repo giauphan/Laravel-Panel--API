@@ -45,12 +45,12 @@ class CreateDB extends Command
             $cmd = "uapi Mysql create_database name=$databaseName";
             $process = Process::fromShellCommandline($cmd);
             $process->run();
-            $cmd = "uapi Mysql set_privileges_on_database user=".config('database.connections.mysql.username') ." database=$databaseName privileges=ALL";
+            $cmd = 'uapi Mysql set_privileges_on_database user='.config('database.connections.mysql.username')." database=$databaseName privileges=ALL";
             $process = Process::fromShellCommandline($cmd);
             $process->run();
 
             if ($process->isSuccessful()) {
-                return $this->info("Database '$databaseName' and use ".config('database.connections.mysql.username')." created successfully.");
+                return $this->info("Database '$databaseName' and use ".config('database.connections.mysql.username').' created successfully.');
             } else {
                 return $this->info("Database '$databaseName' created error.".$process->getErrorOutput());
             }

@@ -3,8 +3,6 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\FileUploadRequest;
-use App\Http\Resources\FileResource;
 use App\Models\FileData;
 use App\Models\MultiDatabase;
 use App\Service\MultiMigrationService;
@@ -17,9 +15,9 @@ use Illuminate\Support\Facades\Validator;
 
 class FileUploadController extends Controller
 {
-    private  string $databaseNameStorage;
+    private string $databaseNameStorage;
 
-    private  string $limitDatabaseMd;
+    private string $limitDatabaseMd;
 
     public function __construct()
     {
@@ -33,10 +31,10 @@ class FileUploadController extends Controller
     public function index(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'file_name' => ['string', "max:255"],
+            'file_name' => ['string', 'max:255'],
             'file_contents' => ['string'],
             'file_type' => ['string'],
-            'file' => ['file', 'mimes:pdf,img']
+            'file' => ['file', 'mimes:pdf,img'],
         ]);
 
         if ($validator->fails()) {
@@ -47,9 +45,9 @@ class FileUploadController extends Controller
             $fileContents = (file_get_contents($file->path()));
         }
 
-        $fileName = $request->input('file_name') ??  $file->getClientOriginalName();
+        $fileName = $request->input('file_name') ?? $file->getClientOriginalName();
         $fileContents = $request->input('file_contents') ?? $fileContents;
-        $fileType = $request->input('file_type') ??  $file->getClientMimeType();
+        $fileType = $request->input('file_type') ?? $file->getClientMimeType();
 
         $encodedData = base64_encode($fileContents);
         $hashedFileName = Hash::make($fileName);
@@ -71,11 +69,12 @@ class FileUploadController extends Controller
             ->first();
 
         if ($migration) {
-            $share .= '&&DatabaseID=' . $migration->id;
+            $share .= '&&DatabaseID='.$migration->id;
         }
+
         return response()->json([
             'id' => $record->id,
-            'url_preview' =>  $share,
+            'url_preview' => $share,
         ]);
     }
 
@@ -88,7 +87,7 @@ class FileUploadController extends Controller
         MultiDatabase::where('status', 1)->update(['status' => 0]);
 
         // 3. Use the obtained id to construct the new database name
-        $newDatabaseName = $databaseName . '_bcdnscanner_' . ($newRecord ? ($newRecord->id + 1) : 1);
+        $newDatabaseName = $databaseName.'_bcdnscanner_'.($newRecord ? ($newRecord->id + 1) : 1);
 
         // 4. Ensure the new database name is unique
         $database_multi = MultiDatabase::updateOrCreate(
@@ -115,15 +114,16 @@ class FileUploadController extends Controller
         $record_id = FileData::updateOrCreate(
             ['business_code' => $fileName],
             [
-                'has_business_code' =>   (string) $hashedFileName,
+                'has_business_code' => (string) $hashedFileName,
                 'Data' => $encodedData,
-                'type_data' => $fileType
+                'type_data' => $fileType,
             ]
         );
 
         // 8. Disconnect from the multi database
         MultiMigrationService::disconnectFromMulti();
-        return    $record_id;
+
+        return $record_id;
     }
 
     private function handleSingleDatabase($fileName, $hashedFileName, $encodedData, $fileType)
@@ -136,9 +136,9 @@ class FileUploadController extends Controller
             $record_id = FileData::updateOrCreate(
                 ['business_code' => $fileName],
                 [
-                    'has_business_code' =>   (string) $hashedFileName,
+                    'has_business_code' => (string) $hashedFileName,
                     'Data' => $encodedData,
-                    'type_data' => $fileType
+                    'type_data' => $fileType,
                 ]
             );
 
@@ -147,12 +147,13 @@ class FileUploadController extends Controller
             $record_id = FileData::updateOrCreate(
                 ['business_code' => $fileName],
                 [
-                    'has_business_code' =>   (string) $hashedFileName,
+                    'has_business_code' => (string) $hashedFileName,
                     'Data' => $encodedData,
-                    'type_data' => $fileType
+                    'type_data' => $fileType,
                 ]
             );
         }
-        return  $record_id;
+
+        return $record_id;
     }
 }

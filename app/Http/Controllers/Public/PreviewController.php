@@ -23,14 +23,13 @@ class PreviewController extends Controller
                 $filename = $this->getFilename($file);
                 if ($file->type_data === 'image/png' || $file->type_data === 'application/pdf') {
                     $headers = [
-                        'Content-Disposition' => 'inline; filename="' . $filename . '"',
+                        'Content-Disposition' => 'inline; filename="'.$filename.'"',
                     ];
                 } else {
                     $headers = [
-                        'Content-Disposition' => 'inline; filename="' . $filename . '.pdf"',
+                        'Content-Disposition' => 'inline; filename="'.$filename.'.pdf"',
                     ];
                 }
-
 
                 if ($file->type_data === 'image/png') {
                     $headers['Content-Type'] = 'image/png';
@@ -65,6 +64,6 @@ class PreviewController extends Controller
 
     private function getFilename($file)
     {
-        return !empty($file->business_code) ? $file->business_code : $file->has_business_code;
+        return ! empty($file->business_code) ? $file->business_code : $file->has_business_code;
     }
 }

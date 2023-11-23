@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace App\Console\Commands;
@@ -51,14 +52,13 @@ class multiMigrationCMD extends Command
     /**
      * Perform migration for a specific database.
      *
-     * @param  \App\Models\MultiDatabase  $migration
      * @return void
      */
     protected function performMigration(MultiDatabase $migration)
     {
         MultiMigrationService::switchToMulti($migration);
 
-        $this->info('Starting migration for ' . $migration->host);
+        $this->info('Starting migration for '.$migration->host);
 
         // Run migration command
         Artisan::call('migrate:refresh', [
@@ -66,6 +66,6 @@ class multiMigrationCMD extends Command
             '--database' => 'mysql2',
         ]);
 
-        $this->info('Migration completed successfully for ' . $migration->host);
+        $this->info('Migration completed successfully for '.$migration->host);
     }
 }
