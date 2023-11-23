@@ -20,12 +20,12 @@ class PreviewController extends Controller
                 $migration = MultiDatabase::findOrFail($request->input('DatabaseID'));
                 MultiMigrationService::switchToMulti($migration);
                 $file = FileData::query()
-                    ->where('has_business_code', $id)->firstOrFail();
+                    ->where('has_business_code','like',"%$id%")->firstOrFail();
                 MultiMigrationService::disconnectFromMulti();
             } else {
                 $file = FileData::query()
-                    ->where('has_business_code', $id)->firstOrFail();
-            }
+                    ->where('has_business_code','like',"%$id%")->firstOrFail();
+            } 
             if ($file) {
                 $decodedData = base64_decode($file->DataBcdn);
                 $filename = !empty($file->business_code) ?  $file->business_code : $file->has_business_code;
