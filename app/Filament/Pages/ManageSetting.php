@@ -3,7 +3,6 @@
 namespace App\Filament\Pages;
 
 use App\Settings\SettingServerStorage;
-use Filament\Forms;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Pages\SettingsPage;
@@ -19,13 +18,13 @@ class ManageSetting extends SettingsPage
         return $form
             ->schema([
                 TextInput::make('server_name')
-                ->required(),
+                    ->required(),
                 TextInput::make('url')
-                ->required(),
+                    ->required(),
                 TextInput::make('database_name')
-                ->required(),
+                    ->required(),
                 TextInput::make('limit_database_mb')
-                ->required(),
+                    ->required(),
             ]);
     }
 }
