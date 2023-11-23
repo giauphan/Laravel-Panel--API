@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('port');
             $table->string('username')->index();
             $table->string('password')->nullable()->index();
+            $table->string('status')->default(0);
             $table->timestamps();
         });
     }

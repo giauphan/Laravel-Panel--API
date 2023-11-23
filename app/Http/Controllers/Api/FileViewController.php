@@ -47,7 +47,6 @@ class FileViewController extends Controller
 
         return response()->json([
             'data' => FileResource::collection($file),
-            'query' => $request->query(),
         ]);
     }
 }
