@@ -24,22 +24,22 @@ jobs:
         with:
           token: ${{ secrets.PAT }}
           ref: ${{ github.head_ref }}
-      - name: Set up Bun
-        uses: oven-sh/setup-bun@v1
+      - name: Cache dependencies
+        uses: actions/cache@v3
         with:
-          bun-version: latest
+            path: ~/.composer/cache/files
+            key: dependencies-laravel-${{ matrix.laravel }}-php-${{ matrix.php }}-composer-${{ hashFiles('composer.json') }}
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+              php-version: ${{ matrix.php }}
+              extensions: mbstring, pdo, pdo_sqlite
+              coverage: none
       - name: Install dependencies
         run: |
-          sudo add-apt-repository -y ppa:ondrej/php
-          sudo apt-get update
-          sudo apt-get install -y php${{ matrix.php }}
-          sudo update-alternatives --set php /usr/bin/php${{ matrix.php }}
-          composer install --no-interaction
-          bun install
+              composer install --prefer-dist --no-interaction
       - name: Run Pint
         run: ./vendor/bin/pint
-      - name: Run Prettier
-        run: bun x prettier --write .
       - name: Pull changes
         run: git pull
       - name: Commit changes
