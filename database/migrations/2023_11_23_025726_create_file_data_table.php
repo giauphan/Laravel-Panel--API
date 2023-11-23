@@ -13,8 +13,9 @@ return new class extends Migration
     {
         Schema::create('file_data', function (Blueprint $table) {
             $table->id();
-            $table->integer('business_code')->unique();
+            $table->string('business_code')->unique();
             $table->text('has_business_code');
+            $table->string('type_data');
             $table->mediumText('Data');
             $table->timestamps();
         });

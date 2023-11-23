@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Public\PreviewController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -17,10 +18,5 @@ Route::get('/', function () {
     return [];
 })->name('login');
 
-Route::group([
-    'as' => 'passport.',
-    'prefix' => config('passport.path', 'oauth'),
-    'namespace' => '\Laravel\Passport\Http\Controllers',
-], function () {
-    // Passport routes...
-});
+
+Route::get('/preview', [PreviewController::class,'__invoke'])->name('preview');

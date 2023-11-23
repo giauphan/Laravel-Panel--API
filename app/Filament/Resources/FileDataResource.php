@@ -3,12 +3,15 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\FileDataResource\Pages;
+use App\Filament\Resources\FileDataResource\RelationManagers;
 use App\Models\FileData;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Illuminate\Support\Facades\Hash;
 
 class FileDataResource extends Resource
@@ -23,8 +26,10 @@ class FileDataResource extends Resource
             ->schema([
                 Forms\Components\TextInput::make('business_code')
                     ->required()
-                    ->unique(ignoreRecord: true)
-                    ->numeric(),
+                    ->unique(ignoreRecord: true),
+                Forms\Components\TextInput::make('type_data')
+                    ->required()
+                    ->maxLength(255),
                 Forms\Components\Textarea::make('has_business_code')
                     ->required()
                     ->dehydrateStateUsing(fn ($state) => Hash::make($state))
@@ -35,6 +40,7 @@ class FileDataResource extends Resource
                     ->dehydrateStateUsing(fn ($state) => base64_encode($state))
                     ->maxLength(16777215)
                     ->columnSpanFull(),
+
             ]);
     }
 
@@ -43,6 +49,8 @@ class FileDataResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('business_code')
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('type_data')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
