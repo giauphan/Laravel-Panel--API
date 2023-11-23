@@ -11,7 +11,6 @@ use Illuminate\Http\Request;
 
 class FileViewController extends Controller
 {
-
     public function __invoke(Request $request)
     {
         $limit = $request->input('limit') ?? 1;
@@ -31,7 +30,7 @@ class FileViewController extends Controller
             $file = FileData::query()
                 ->where('business_code', $request->input('business_code'))
                 ->get();
-                if ($file->isEmpty()) {
+            if ($file->isEmpty()) {
                 return response()->json([
                     'status' => 404,
                     'error' => 'business code not Found',
