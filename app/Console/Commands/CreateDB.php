@@ -50,9 +50,9 @@ class CreateDB extends Command
             $process->run();
 
             if ($process->isSuccessful()) {
-                return $this->info("Database '$databaseName' and use ".config('database.connections.mysql.username').' created successfully.');
+                $this->info("Database '$databaseName' and use ".config('database.connections.mysql.username').' created successfully.');
             } else {
-                return $this->info("Database '$databaseName' created error.".$process->getErrorOutput());
+                $this->info("Database '$databaseName' created error.".$process->getErrorOutput());
             }
         }
     }

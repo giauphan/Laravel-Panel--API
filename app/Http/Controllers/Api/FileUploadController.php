@@ -38,8 +38,13 @@ class FileUploadController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return redirect()->json()->withErrors($validator)->withInput();
+            return response()->json([
+                'errors' => $validator->errors(),
+                'message' => 'Validation failed',
+            ], 422);
         }
+        $file = null; // Initialize $file
+        $fileContents = null;
         if ($request->has('files')) {
             $file = $request->file('files');
             $fileContents = (file_get_contents($file->path()));
