@@ -2,14 +2,9 @@
 
 namespace App\Providers;
 
-use App\Models\Client;
 use Illuminate\Auth\Notifications\ResetPassword;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
-use Laravel\Passport\AuthCode;
 use Laravel\Passport\Passport;
-use Laravel\Passport\PersonalAccessClient;
-use Laravel\Passport\RefreshToken;
-use Laravel\Passport\Token;
 
 class AuthServiceProvider extends ServiceProvider
 {
