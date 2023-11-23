@@ -33,6 +33,7 @@ class AuthServiceProvider extends ServiceProvider
             'place-file-upload' => 'Place file-upload',
             'check-status' => 'Check file-upload status',
         ]);
-        Passport::tokensExpireIn(now()->addHour(6));
+        Passport::tokensExpireIn(now()->addHours(6));
+
     }
 }

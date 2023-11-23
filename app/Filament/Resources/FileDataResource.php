@@ -9,6 +9,7 @@ use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Illuminate\Support\Facades\Hash;
 
 class FileDataResource extends Resource
 {
@@ -22,13 +23,16 @@ class FileDataResource extends Resource
             ->schema([
                 Forms\Components\TextInput::make('business_code')
                     ->required()
-                    ->maxLength(255),
+                    ->unique(ignoreRecord: true)
+                    ->numeric(),
                 Forms\Components\Textarea::make('has_business_code')
                     ->required()
+                    ->dehydrateStateUsing(fn ($state) => Hash::make($state))
                     ->maxLength(65535)
                     ->columnSpanFull(),
                 Forms\Components\Textarea::make('Data')
                     ->required()
+                    ->dehydrateStateUsing(fn ($state) => base64_encode($state))
                     ->maxLength(16777215)
                     ->columnSpanFull(),
             ]);
