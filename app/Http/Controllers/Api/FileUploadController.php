@@ -43,7 +43,7 @@ class FileUploadController extends Controller
                 'message' => 'Validation failed',
             ], 422);
         }
-        
+
         $file = null; // Initialize $file
         $fileContents = null;
         if ($request->has('files')) {

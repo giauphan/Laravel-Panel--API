@@ -23,11 +23,11 @@ class PreviewController extends Controller
                 $filename = $this->getFilename($file);
                 if ($file->type_data === 'image/png' || $file->type_data === 'application/pdf') {
                     $headers = [
-                        'Content-Disposition' => 'inline; filename="' . $filename . '"',
+                        'Content-Disposition' => 'inline; filename="'.$filename.'"',
                     ];
                 } else {
                     $headers = [
-                        'Content-Disposition' => 'inline; filename="' . $filename . '.pdf"',
+                        'Content-Disposition' => 'inline; filename="'.$filename.'.pdf"',
                     ];
                 }
 
@@ -49,7 +49,6 @@ class PreviewController extends Controller
     private function findFileById(Request $request, $id)
     {
 
-
         if ($request->has('DatabaseID')) {
             $migration = MultiDatabase::findOrFail($request->input('DatabaseID'));
             MultiMigrationService::switchToMulti($migration);
@@ -66,6 +65,6 @@ class PreviewController extends Controller
 
     private function getFilename($file)
     {
-        return !empty($file->business_code) ? $file->business_code : $file->has_business_code;
+        return ! empty($file->business_code) ? $file->business_code : $file->has_business_code;
     }
 }

@@ -29,7 +29,7 @@ class FileDestroy extends Controller
         $file->delete();
 
         return response()->json([
-            'status' => 200
+            'status' => 200,
         ]);
     }
 }
