@@ -3,12 +3,15 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\MultiDatabaseResource\Pages;
+use App\Filament\Resources\MultiDatabaseResource\RelationManagers;
 use App\Models\MultiDatabase;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class MultiDatabaseResource extends Resource
 {
@@ -25,7 +28,6 @@ class MultiDatabaseResource extends Resource
                     ->maxLength(255),
                 Forms\Components\TextInput::make('database')
                     ->required()
-
                     ->maxLength(255),
                 Forms\Components\TextInput::make('port')
                     ->required()
@@ -36,6 +38,11 @@ class MultiDatabaseResource extends Resource
                 Forms\Components\TextInput::make('password')
                     ->password()
                     ->maxLength(255),
+                Forms\Components\Select::make('status')->options([
+                    '0' => 'không cho phép lưu',
+                    '1' => 'cho phép lưu',
+                ])
+                    ->required(),
             ]);
     }
 
@@ -50,6 +57,8 @@ class MultiDatabaseResource extends Resource
                 Tables\Columns\TextColumn::make('port')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('username')
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('status')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()

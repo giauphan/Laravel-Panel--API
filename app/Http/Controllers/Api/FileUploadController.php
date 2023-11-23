@@ -34,7 +34,7 @@ class FileUploadController extends Controller
             'file_name' => ['string', 'max:255'],
             'file_contents' => ['string'],
             'file_type' => ['string'],
-            'file' => ['file', 'mimes:pdf,img'],
+            'files' => ['file', 'mimes:pdf,png,jpg,svg'],
         ]);
 
         if ($validator->fails()) {
@@ -43,6 +43,7 @@ class FileUploadController extends Controller
                 'message' => 'Validation failed',
             ], 422);
         }
+        
         $file = null; // Initialize $file
         $fileContents = null;
         if ($request->has('files')) {
@@ -79,6 +80,7 @@ class FileUploadController extends Controller
 
         return response()->json([
             'id' => $record->id,
+            'has_business_code' => $record->has_business_code,
             'url_preview' => $share,
         ]);
     }
