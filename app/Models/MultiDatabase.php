@@ -8,4 +8,6 @@ use Illuminate\Database\Eloquent\Model;
 class MultiDatabase extends Model
 {
     use HasFactory;
+
+    protected $fillable = ['host', 'database', 'username', 'password', 'port', 'status'];
 }

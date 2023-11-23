@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\FileUploadController;
 use App\Http\Controllers\Api\FileViewController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -21,5 +22,6 @@ Route::middleware(['auth:api', 'scopes:place-file-upload'])->group(function () {
     });
     Route::group(['as' => 'passport.', 'prefix' => 'file'], function () {
         Route::get('show', [FileViewController::class, '__invoke']);
+        Route::post('upload', [FileUploadController::class, 'index']);
     });
 });

@@ -25,7 +25,6 @@ class MultiDatabaseResource extends Resource
                     ->maxLength(255),
                 Forms\Components\TextInput::make('database')
                     ->required()
-
                     ->maxLength(255),
                 Forms\Components\TextInput::make('port')
                     ->required()
@@ -36,6 +35,11 @@ class MultiDatabaseResource extends Resource
                 Forms\Components\TextInput::make('password')
                     ->password()
                     ->maxLength(255),
+                Forms\Components\Select::make('status')->options([
+                    '0' => 'không cho phép lưu',
+                    '1' => 'cho phép lưu',
+                ])
+                    ->required(),
             ]);
     }
 
@@ -50,6 +54,8 @@ class MultiDatabaseResource extends Resource
                 Tables\Columns\TextColumn::make('port')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('username')
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('status')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
