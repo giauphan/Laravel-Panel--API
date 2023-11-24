@@ -39,24 +39,39 @@ class FileUploadController extends Controller
 
         if ($validator->fails()) {
             return response()->json([
+                'status' => 422,
                 'errors' => $validator->errors(),
                 'message' => 'Validation failed',
             ], 422);
         }
 
-        $file = null; // Initialize $file
-        $encodedData_file = null;
-        if ($request->has('files')) {
+        if ($request->hasFile('files') && $request->file('files')->isValid()) {
             $file = $request->file('files');
-            $encodedData_file = base64_encode(file_get_contents($file->path()));
+            $fileContents = file_get_contents($file->path());
+            $fileName =  $file->getClientOriginalName();
+            $fileType =  $file->getClientMimeType();
+        } elseif ($request->filled('file_contents')) {
+            // Option 2: Send file content as base64
+            $fileContents = base64_decode($request->input('file_contents'));
+            $fileName = $request->input('file_name') ?? 'file'; 
+            $fileType = $request->input('file_type') ?? 'application/octet-stream';
+        } else {
+            return response()->json([
+                'status' => 422,
+                'errors' => ['files' => ['The files field is required.']],
+                'message' => 'Validation failed',
+            ], 422);
         }
 
-        $fileName = $request->input('file_name') ?? $file->getClientOriginalName();
-        $fileContents = $request->input('file_contents');
-        $fileType = $request->input('file_type') ?? $file->getClientMimeType();
+        $encodedData = base64_encode($fileContents);
 
-        $encodedData = $encodedData_file ?? ($fileContents);
-
+        if (!$encodedData) {
+            return response()->json([
+                'status' => 422,
+                'errors' => 'The files or file base64 field is required.',
+                'message' => 'Validation failed',
+            ], 422);
+        }
         $hashedFileName = Hash::make($fileName);
 
         $migration = MultiDatabase::where('status', 1)->first();
@@ -76,7 +91,7 @@ class FileUploadController extends Controller
             ->first();
 
         if ($migration) {
-            $share .= '&&DatabaseID='.$migration->id;
+            $share .= '&&DatabaseID=' . $migration->id;
         }
 
         return response()->json([
@@ -95,7 +110,7 @@ class FileUploadController extends Controller
         MultiDatabase::where('status', 1)->update(['status' => 0]);
 
         // 3. Use the obtained id to construct the new database name
-        $newDatabaseName = $databaseName.'_bcdnscanner_'.($newRecord ? ($newRecord->id + 1) : 1);
+        $newDatabaseName = $databaseName . '_bcdnscanner_' . ($newRecord ? ($newRecord->id + 1) : 1);
 
         // 4. Ensure the new database name is unique
         $database_multi = MultiDatabase::updateOrCreate(

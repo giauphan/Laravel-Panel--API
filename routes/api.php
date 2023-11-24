@@ -21,7 +21,7 @@ Route::middleware(['auth:api', 'scopes:place-file-upload'])->group(function () {
     Route::get('user', function (Request $request) {
         return $request->user();
     });
-    Route::middleware('throttle:10,1')->group(['as' => 'passport.', 'prefix' => 'file'], function () {
+    Route::middleware('throttle:10,1')->prefix('file')->group(function () {
         Route::get('show', [FileViewController::class, '__invoke']);
         Route::post('upload', [FileUploadController::class, 'index']);
         Route::delete('delete', [FileDestroy::class, '__invoke']);
