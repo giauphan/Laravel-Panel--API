@@ -18,7 +18,7 @@ Route::get('/', function () {
     return [];
 })->name('home');
 Route::get('/login', function () {
-    return ['login'=>"token Expire"];
+    return ['login' => 'token Expire'];
 })->name('login');
 
 Route::get('/preview', [PreviewController::class, 'index'])->name('preview');
