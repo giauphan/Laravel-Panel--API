@@ -48,7 +48,7 @@ class FileUploadController extends Controller
         if ($request->hasFile('files') && $request->file('files')->isValid()) {
             $file = $request->file('files');
             $fileContents = file_get_contents($file->path());
-            $fileName = $file->getClientOriginalName();
+            $fileName =  $request->input('file_name') ??  $file->getClientOriginalName();
             $fileType = $file->getClientMimeType();
         } elseif ($request->filled('file_contents')) {
             // Option 2: Send file content as base64
