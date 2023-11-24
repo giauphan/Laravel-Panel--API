@@ -22,8 +22,8 @@ class ClientResource extends Resource
         return $form
             ->schema([
                 Select::make('user_id')
-                ->relationship('users', 'id')
-                ->preload(),
+                    ->relationship('users', 'id')
+                    ->preload(),
                 Forms\Components\TextInput::make('name')
                     ->required()
                     ->maxLength(255),
