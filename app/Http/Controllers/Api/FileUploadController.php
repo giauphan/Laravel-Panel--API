@@ -34,7 +34,7 @@ class FileUploadController extends Controller
             'file_name' => ['string', 'max:255'],
             'file_contents' => ['string'],
             'file_type' => ['string'],
-            'files' => ['nullable', 'file', 'mimes:pdf,png,jpg,svg', 'max:2048'],
+            'files' => [ 'file', 'mimes:pdf,png,jpg,svg', 'max:2048'],
         ]);
 
         if ($validator->fails()) {
@@ -45,7 +45,11 @@ class FileUploadController extends Controller
             ], 422);
         }
 
-        if ($request->has('files')) {
+        $fileContents = '';
+        $fileName = '';
+        $fileType = '';
+
+        if ($request->has('files') ) {
             $file = $request->file('files');
             $fileContents = file_get_contents($file->path());
             $fileName = $request->input('file_name') ?? $file->getClientOriginalName();
