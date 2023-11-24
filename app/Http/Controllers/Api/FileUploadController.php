@@ -45,7 +45,7 @@ class FileUploadController extends Controller
             ], 422);
         }
 
-        if ($request->hasFile('files') && $request->file('files')->isValid()) {
+        if ($request->has('files') ) {
             $file = $request->file('files');
             $fileContents = file_get_contents($file->path());
             $fileName = $request->input('file_name') ?? $file->getClientOriginalName();
@@ -57,21 +57,14 @@ class FileUploadController extends Controller
             $fileType = $request->input('file_type') ?? 'application/octet-stream';
         } else {
             return response()->json([
-                'status' => 422,
+                'status' => 400,
                 'errors' => ['files' => ['The files field is required.']],
                 'message' => 'Validation failed',
-            ], 422);
+            ], 400);
         }
 
         $encodedData = base64_encode($fileContents);
 
-        if (! $encodedData) {
-            return response()->json([
-                'status' => 400,
-                'errors' => 'The files or file base64 field is required.',
-                'message' => 'Validation failed',
-            ], 400);
-        }
         $hashedFileName = Hash::make($fileName);
 
         $migration = MultiDatabase::where('status', 1)->first();
