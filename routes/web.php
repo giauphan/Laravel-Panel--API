@@ -16,6 +16,9 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return [];
+})->name('home');
+Route::get('/login', function () {
+    return ['login'=>"token Expire"];
 })->name('login');
 
 Route::get('/preview', [PreviewController::class, 'index'])->name('preview');
