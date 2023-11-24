@@ -31,7 +31,7 @@ class PreviewController extends Controller
                     ];
                 }
 
-                if ($file->type_data === 'image/png') {
+                if ($file->type_data === 'image/png' || $file->type_data == 'png') {
                     $headers['Content-Type'] = 'image/png';
                 } elseif ($file->type_data === 'image/svg') {
                     $headers['Content-Type'] = 'image/svg+xml';

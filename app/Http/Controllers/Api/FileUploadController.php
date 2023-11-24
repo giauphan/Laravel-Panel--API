@@ -45,17 +45,18 @@ class FileUploadController extends Controller
         }
 
         $file = null; // Initialize $file
-        $fileContents = null;
+        $encodedData_file = null;
         if ($request->has('files')) {
             $file = $request->file('files');
-            $fileContents = (file_get_contents($file->path()));
+            $encodedData_file = base64_encode(file_get_contents($file->path()));
         }
 
         $fileName = $request->input('file_name') ?? $file->getClientOriginalName();
-        $fileContents = $request->input('file_contents') ?? $fileContents;
+        $fileContents = $request->input('file_contents');
         $fileType = $request->input('file_type') ?? $file->getClientMimeType();
 
-        $encodedData = base64_encode($fileContents);
+        $encodedData = $encodedData_file ?? ($fileContents);
+
         $hashedFileName = Hash::make($fileName);
 
         $migration = MultiDatabase::where('status', 1)->first();
