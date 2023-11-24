@@ -48,12 +48,12 @@ class FileUploadController extends Controller
         if ($request->hasFile('files') && $request->file('files')->isValid()) {
             $file = $request->file('files');
             $fileContents = file_get_contents($file->path());
-            $fileName =  $file->getClientOriginalName();
-            $fileType =  $file->getClientMimeType();
+            $fileName = $file->getClientOriginalName();
+            $fileType = $file->getClientMimeType();
         } elseif ($request->filled('file_contents')) {
             // Option 2: Send file content as base64
             $fileContents = base64_decode($request->input('file_contents'));
-            $fileName = $request->input('file_name') ?? 'file'; 
+            $fileName = $request->input('file_name') ?? 'file';
             $fileType = $request->input('file_type') ?? 'application/octet-stream';
         } else {
             return response()->json([
@@ -65,7 +65,7 @@ class FileUploadController extends Controller
 
         $encodedData = base64_encode($fileContents);
 
-        if (!$encodedData) {
+        if (! $encodedData) {
             return response()->json([
                 'status' => 422,
                 'errors' => 'The files or file base64 field is required.',
@@ -91,7 +91,7 @@ class FileUploadController extends Controller
             ->first();
 
         if ($migration) {
-            $share .= '&&DatabaseID=' . $migration->id;
+            $share .= '&&DatabaseID='.$migration->id;
         }
 
         return response()->json([
@@ -110,7 +110,7 @@ class FileUploadController extends Controller
         MultiDatabase::where('status', 1)->update(['status' => 0]);
 
         // 3. Use the obtained id to construct the new database name
-        $newDatabaseName = $databaseName . '_bcdnscanner_' . ($newRecord ? ($newRecord->id + 1) : 1);
+        $newDatabaseName = $databaseName.'_bcdnscanner_'.($newRecord ? ($newRecord->id + 1) : 1);
 
         // 4. Ensure the new database name is unique
         $database_multi = MultiDatabase::updateOrCreate(
