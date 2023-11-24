@@ -9,7 +9,6 @@ use Illuminate\Support\Facades\Validator;
 
 class FileDestroy extends Controller
 {
-
     public function __invoke(Request $request)
     {
         $validator = Validator::make($request->all(), [
@@ -26,7 +25,7 @@ class FileDestroy extends Controller
 
         $file = FileData::find($id);
 
-        if (!$file) {
+        if (! $file) {
             return response()->json([
                 'status' => 404,
                 'error' => 'file not Found',

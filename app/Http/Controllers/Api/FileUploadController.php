@@ -55,7 +55,7 @@ class FileUploadController extends Controller
         $fileContents = $request->input('file_contents');
         $fileType = $request->input('file_type') ?? $file->getClientMimeType();
 
-        $encodedData = $encodedData_file ?? ($fileContents) ;
+        $encodedData = $encodedData_file ?? ($fileContents);
 
         $hashedFileName = Hash::make($fileName);
 
