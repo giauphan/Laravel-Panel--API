@@ -67,10 +67,10 @@ class FileUploadController extends Controller
 
         if (! $encodedData) {
             return response()->json([
-                'status' => 422,
+                'status' => 400,
                 'errors' => 'The files or file base64 field is required.',
                 'message' => 'Validation failed',
-            ], 422);
+            ], 400);
         }
         $hashedFileName = Hash::make($fileName);
 

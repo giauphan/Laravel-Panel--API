@@ -24,6 +24,7 @@ Route::middleware(['auth:api', 'scopes:place-file-upload'])->group(function () {
     Route::middleware('throttle:10,1')->prefix('file')->group(function () {
         Route::get('show', [FileViewController::class, '__invoke']);
         Route::post('upload', [FileUploadController::class, 'index']);
+        Route::put('upload', [FileUploadController::class, 'index']);
         Route::delete('delete', [FileDestroy::class, '__invoke']);
     });
 });
