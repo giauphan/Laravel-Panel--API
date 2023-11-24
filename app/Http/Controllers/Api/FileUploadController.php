@@ -34,7 +34,7 @@ class FileUploadController extends Controller
             'file_name' => ['string', 'max:255'],
             'file_contents' => ['string'],
             'file_type' => ['string'],
-            'files' => ['file', 'mimes:pdf,png,jpg,svg'],
+            'files' => ['file', 'mimes:pdf,png,jpg,svg','max:2048'],
         ]);
 
         if ($validator->fails()) {
