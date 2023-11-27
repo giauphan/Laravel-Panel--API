@@ -16,7 +16,6 @@ class FileResource extends JsonResource
             'id' => $this->id,
             'business_code' => $this->business_code,
             'has_business_code' => $this->has_business_code,
-            'Data' => $this->Data,
             'url_preview' => route('preview', ['id' => $this->has_business_code]),
         ];
     }
