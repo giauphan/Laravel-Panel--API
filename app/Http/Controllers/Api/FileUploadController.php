@@ -82,13 +82,22 @@ class FileUploadController extends Controller
             ? $this->handleSingleDatabase($fileName, $hashedFileName, $encodedData, $fileType)
             : $this->handleMultiDatabase($fileName, $hashedFileName, $encodedData, $this->databaseNameStorage, $fileType);
 
+        if ($record == null) {
+            return response()->json([
+                'status' => 200,
+                'errors' => ['files' => ['The files have a duplicate business_code.']],
+                'message' => 'Duplicate record',
+            ], 200);
+        }
+
+
         $share = route('preview', ['id' => $record->has_business_code]);
         $migration = MultiDatabase::where('status', 1)
             ->orderBy('id', 'desc')
             ->first();
 
         if ($migration) {
-            $share .= '&&DatabaseID='.$migration->id;
+            $share .= '&&DatabaseID=' . $migration->id;
         }
 
         return response()->json([
@@ -107,7 +116,7 @@ class FileUploadController extends Controller
         MultiDatabase::where('status', 1)->update(['status' => 0]);
 
         // 3. Use the obtained id to construct the new database name
-        $newDatabaseName = $databaseName.'_bcdnscanner_'.($newRecord ? ($newRecord->id + 1) : 1);
+        $newDatabaseName = $databaseName . '_bcdnscanner_' . ($newRecord ? ($newRecord->id + 1) : 1);
 
         // 4. Ensure the new database name is unique
         $database_multi = MultiDatabase::updateOrCreate(
@@ -131,14 +140,18 @@ class FileUploadController extends Controller
         Artisan::call('multi:migration');
 
         // 7. Update or create data in the DataBcdn table
-        $record_id = FileData::updateOrCreate(
-            ['business_code' => $fileName],
-            [
-                'has_business_code' => (string) $hashedFileName,
-                'Data' => $encodedData,
-                'type_data' => $fileType,
-            ]
-        );
+        $record = FileData::firstOrNew(['business_code' => $fileName]);
+
+        if ($record->exists) {
+          return null;
+        }
+        $record->fill([
+            'has_business_code' => (string) $hashedFileName,
+            'Data' => $encodedData,
+            'type_data' => $fileType,
+        ])->save();
+
+        $record_id = $record;
 
         // 8. Disconnect from the multi database
         MultiMigrationService::disconnectFromMulti();
@@ -153,25 +166,34 @@ class FileUploadController extends Controller
 
         if ($migration) {
             MultiMigrationService::switchToMulti($migration);
-            $record_id = FileData::updateOrCreate(
-                ['business_code' => $fileName],
-                [
-                    'has_business_code' => (string) $hashedFileName,
-                    'Data' => $encodedData,
-                    'type_data' => $fileType,
-                ]
-            );
+            $record = FileData::firstOrNew(['business_code' => $fileName]);
+
+            if ($record->exists) {
+              return null;
+            }
+            $record->fill([
+                'has_business_code' => (string) $hashedFileName,
+                'Data' => $encodedData,
+                'type_data' => $fileType,
+            ])->save();
+
+            $record_id = $record;
 
             MultiMigrationService::disconnectFromMulti();
         } else {
-            $record_id = FileData::updateOrCreate(
-                ['business_code' => $fileName],
-                [
-                    'has_business_code' => (string) $hashedFileName,
-                    'Data' => $encodedData,
-                    'type_data' => $fileType,
-                ]
-            );
+            $record = FileData::firstOrNew(['business_code' => $fileName]);
+
+            if ($record->exists) {
+                return null;
+            }
+            $record->fill([
+                'has_business_code' => (string) $hashedFileName,
+                'Data' => $encodedData,
+                'type_data' => $fileType,
+            ])->save();
+
+
+            $record_id = $record;
         }
 
         return $record_id;
