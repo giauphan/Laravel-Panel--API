@@ -4,7 +4,6 @@ namespace App\Console\Commands;
 
 use App\Http\Controllers\Api\FileUploadController;
 use App\Models\MultiDatabase;
-use App\Settings\SettingServerStorage;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
@@ -25,7 +24,6 @@ class FileUpload extends Command
      */
     protected $description = 'Command description';
 
-
     public function handle()
     {
 
@@ -36,9 +34,8 @@ class FileUpload extends Command
         $fileType = $this->argument('fileType');
         $file = $this->argument('fileContent');
 
-
         $fileName = $filename ?? 'file';
-        $fileType = $fileType ?? 'application/octet-stream'; 
+        $fileType = $fileType ?? 'application/octet-stream';
         $fileContents = file_get_contents($file);
 
         $encodedData = base64_encode($fileContents);
@@ -57,9 +54,9 @@ class FileUpload extends Command
 
         if ($record == null) {
             $this->error('Duplicate record');
+
             return;
         }
-
 
         $share = route('preview', ['id' => $record->has_business_code]);
         $migration = MultiDatabase::where('status', 1)
@@ -67,7 +64,7 @@ class FileUpload extends Command
             ->first();
 
         if ($migration) {
-            $share .= '&&DatabaseID=' . $migration->id;
+            $share .= '&&DatabaseID='.$migration->id;
         }
         dump($share);
     }

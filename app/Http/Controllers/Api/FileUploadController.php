@@ -17,7 +17,6 @@ class FileUploadController extends Controller
 {
     public SettingServerStorage $settings;
 
-  
     public function index(Request $request)
     {
         $validator = Validator::make($request->all(), [
@@ -68,9 +67,9 @@ class FileUploadController extends Controller
             ->first()->size_mb;
 
         $record = null;
-        $record = $totalSize + strlen($encodedData) / (1024 * 1024) <=  $this->settings->limit_database_mb
+        $record = $totalSize + strlen($encodedData) / (1024 * 1024) <= $this->settings->limit_database_mb
             ? $this->handleSingleDatabase($fileName, $hashedFileName, $encodedData, $fileType)
-            : $this->handleMultiDatabase($fileName, $hashedFileName, $encodedData,  $fileType);
+            : $this->handleMultiDatabase($fileName, $hashedFileName, $encodedData, $fileType);
 
         if ($record == null) {
             return response()->json([
@@ -80,14 +79,13 @@ class FileUploadController extends Controller
             ], 200);
         }
 
-
         $share = route('preview', ['id' => $record->has_business_code]);
         $migration = MultiDatabase::where('status', 1)
             ->orderBy('id', 'desc')
             ->first();
 
         if ($migration) {
-            $share .= '&&DatabaseID=' . $migration->id;
+            $share .= '&&DatabaseID='.$migration->id;
         }
 
         return response()->json([
@@ -106,7 +104,7 @@ class FileUploadController extends Controller
         MultiDatabase::where('status', 1)->update(['status' => 0]);
 
         // 3. Use the obtained id to construct the new database name
-        $newDatabaseName =  $this->settings->database_name . '_bcdnscanner_' . ($newRecord ? ($newRecord->id + 1) : 1);
+        $newDatabaseName = $this->settings->database_name.'_bcdnscanner_'.($newRecord ? ($newRecord->id + 1) : 1);
 
         // 4. Ensure the new database name is unique
         $database_multi = MultiDatabase::updateOrCreate(
@@ -181,7 +179,6 @@ class FileUploadController extends Controller
                 'Data' => $encodedData,
                 'type_data' => $fileType,
             ])->save();
-
 
             $record_id = $record;
         }

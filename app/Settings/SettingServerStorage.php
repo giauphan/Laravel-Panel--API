@@ -10,7 +10,7 @@ class SettingServerStorage extends Settings
 
     public string $url;
 
-    public string $database_name = "bcdn";
+    public string $database_name = 'bcdn';
 
     public int $limit_database_mb = 100;
 

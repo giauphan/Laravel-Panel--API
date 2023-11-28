@@ -31,8 +31,7 @@ class CreateFileCmd extends Command
         $fileType = $this->argument('fileType');
         $file = $this->argument('fileContent');
 
-
-        $path_file = public_path() . "/file.pdf";
+        $path_file = public_path().'/file.pdf';
 
         file_put_contents($path_file, base64_decode($file));
 
@@ -44,6 +43,6 @@ class CreateFileCmd extends Command
         $output = $process->getOutput();
 
         $outputLines = explode("\n", trim($output));  // Use "\n" as the delimiter
-        dump($outputLines, $outputLines[0] == "Duplicate record");
+        dump($outputLines, $outputLines[0] == 'Duplicate record');
     }
 }
