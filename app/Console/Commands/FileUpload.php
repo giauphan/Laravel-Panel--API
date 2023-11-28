@@ -29,14 +29,21 @@ class FileUpload extends Command
 
         $fileuploadcontroller = new FileUploadController();
         $limitDatabaseMd = 100;
-
+        // Previous code
         $filename = $this->argument('filename');
         $fileType = $this->argument('fileType');
-        $file = $this->argument('fileContent');
+        $fileContent = $this->argument('fileContent');
 
-        $fileName = $filename ?? 'file';
-        $fileType = $fileType ?? 'application/octet-stream';
-        $fileContents = file_get_contents($file);
+        // New code
+        if ($filename == null || $fileType == null || $fileContent == null) {
+            $this->error('Missing required arguments: filename, fileType, fileContent');
+            return;
+        }
+
+
+        $fileName = $filename;
+        $fileType = $fileType;
+        $fileContents = file_get_contents($fileContent);
 
         $encodedData = base64_encode($fileContents);
         $hashedFileName = Hash::make($fileName);
@@ -64,7 +71,7 @@ class FileUpload extends Command
             ->first();
 
         if ($migration) {
-            $share .= '&&DatabaseID='.$migration->id;
+            $share .= '&&DatabaseID=' . $migration->id;
         }
         dump($share);
     }
