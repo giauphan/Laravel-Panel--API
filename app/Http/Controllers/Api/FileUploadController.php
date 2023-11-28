@@ -15,19 +15,9 @@ use Illuminate\Support\Facades\Validator;
 
 class FileUploadController extends Controller
 {
-    private string $databaseNameStorage;
+    public SettingServerStorage $settings;
 
-    private string $limitDatabaseMd;
-
-    public function __construct()
-    {
-        $settings = new SettingServerStorage();
-        if ($settings->server_name == 'storage') {
-            $this->databaseNameStorage = $settings->database_name;
-            $this->limitDatabaseMd = $settings->limit_database_mb;
-        }
-    }
-
+  
     public function index(Request $request)
     {
         $validator = Validator::make($request->all(), [
@@ -44,7 +34,7 @@ class FileUploadController extends Controller
                 'message' => 'Validation failed',
             ], 422);
         }
-
+        $this->settings = new SettingServerStorage();
         $fileContents = '';
         $fileName = '';
         $fileType = '';
@@ -78,9 +68,9 @@ class FileUploadController extends Controller
             ->first()->size_mb;
 
         $record = null;
-        $record = $totalSize + strlen($encodedData) / (1024 * 1024) <= $this->limitDatabaseMd
+        $record = $totalSize + strlen($encodedData) / (1024 * 1024) <=  $this->settings->limit_database_mb
             ? $this->handleSingleDatabase($fileName, $hashedFileName, $encodedData, $fileType)
-            : $this->handleMultiDatabase($fileName, $hashedFileName, $encodedData, $this->databaseNameStorage, $fileType);
+            : $this->handleMultiDatabase($fileName, $hashedFileName, $encodedData,  $fileType);
 
         if ($record == null) {
             return response()->json([
@@ -107,7 +97,7 @@ class FileUploadController extends Controller
         ]);
     }
 
-    private function handleMultiDatabase($fileName, $hashedFileName, $encodedData, $databaseName, $fileType)
+    public function handleMultiDatabase($fileName, $hashedFileName, $encodedData, $fileType)
     {
         $record_id = null;
         // 1. Get the latest record
@@ -116,7 +106,7 @@ class FileUploadController extends Controller
         MultiDatabase::where('status', 1)->update(['status' => 0]);
 
         // 3. Use the obtained id to construct the new database name
-        $newDatabaseName = $databaseName . '_bcdnscanner_' . ($newRecord ? ($newRecord->id + 1) : 1);
+        $newDatabaseName =  $this->settings->database_name . '_bcdnscanner_' . ($newRecord ? ($newRecord->id + 1) : 1);
 
         // 4. Ensure the new database name is unique
         $database_multi = MultiDatabase::updateOrCreate(
@@ -143,7 +133,7 @@ class FileUploadController extends Controller
         $record = FileData::firstOrNew(['business_code' => $fileName]);
 
         if ($record->exists) {
-          return null;
+            return null;
         }
         $record->fill([
             'has_business_code' => (string) $hashedFileName,
@@ -159,7 +149,7 @@ class FileUploadController extends Controller
         return $record_id;
     }
 
-    private function handleSingleDatabase($fileName, $hashedFileName, $encodedData, $fileType)
+    public function handleSingleDatabase($fileName, $hashedFileName, $encodedData, $fileType)
     {
         $record_id = null;
         $migration = MultiDatabase::where('status', 1)->first();
@@ -169,7 +159,7 @@ class FileUploadController extends Controller
             $record = FileData::firstOrNew(['business_code' => $fileName]);
 
             if ($record->exists) {
-              return null;
+                return null;
             }
             $record->fill([
                 'has_business_code' => (string) $hashedFileName,

@@ -10,12 +10,12 @@ class SettingServerStorage extends Settings
 
     public string $url;
 
-    public string $database_name;
+    public string $database_name = "bcdn";
 
-    public string $limit_database_mb;
+    public int $limit_database_mb = 100;
 
     public static function group(): string
     {
-        return 'server';
+        return 'Server';
     }
 }
