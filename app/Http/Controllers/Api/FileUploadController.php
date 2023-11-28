@@ -100,7 +100,7 @@ class FileUploadController extends Controller
         $record_id = null;
         // 1. Get the latest record
         $newRecord = MultiDatabase::orderBy('id', 'desc')->first();
-        
+
         // 2. Update all records with status = 1 to status = 0
         MultiDatabase::where('status', 1)->update(['status' => 0]);
 
