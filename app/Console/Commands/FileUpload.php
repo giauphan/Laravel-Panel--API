@@ -37,9 +37,9 @@ class FileUpload extends Command
         // New code
         if ($filename == null || $fileType == null || $fileContent == null) {
             $this->error('Missing required arguments: filename, fileType, fileContent');
+
             return;
         }
-
 
         $fileName = $filename;
         $fileType = $fileType;
@@ -71,7 +71,7 @@ class FileUpload extends Command
             ->first();
 
         if ($migration) {
-            $share .= '&&DatabaseID=' . $migration->id;
+            $share .= '&&DatabaseID='.$migration->id;
         }
         dump($share);
     }
