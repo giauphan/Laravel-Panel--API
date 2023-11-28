@@ -61,7 +61,7 @@ class multiMigrationCMD extends Command
         $this->info('Starting migration for '.$migration->host);
 
         // Run migration command
-        Artisan::call('migrate:refresh', [
+        Artisan::call('migrate', [
             '--path' => 'database/migrations/Multi_Migration',
             '--database' => 'mysql2',
         ]);
