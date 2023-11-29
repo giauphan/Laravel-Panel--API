@@ -70,7 +70,7 @@ class FileUploadController extends Controller
         $encodedData = base64_encode($fileContents);
 
         $hashedFileName = Hash::make($fileName);
-
+        $totalSize = 0;
         $migration = MultiDatabase::where('status', 1)->first();
         $totalSize = DB::table('information_schema.tables')
             ->selectRaw('ROUND(SUM(data_length + index_length) / 1024 / 1024, 2) AS size_mb')
