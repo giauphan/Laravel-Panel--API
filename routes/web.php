@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Public\PreviewController;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -13,12 +14,18 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
-
 Route::get('/', function () {
     return [];
-})->name('home');
+});
+
 Route::get('/login', function () {
     return ['login' => 'token Expire'];
 })->name('login');
 
 Route::get('/preview', [PreviewController::class, 'index'])->name('preview');
+
+Auth::routes();
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+
