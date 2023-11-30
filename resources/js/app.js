@@ -16,7 +16,10 @@ import { createApp } from 'vue';
 const app = createApp({});
 
 import ExampleComponent from './components/ExampleComponent.vue';
+import DropDown from './components/Drop-down.vue';
+
 app.component('example-component', ExampleComponent);
+app.component('drop-down', DropDown);
 
 /**
  * The following block of code may be used to automatically register your
