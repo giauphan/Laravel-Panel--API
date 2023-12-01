@@ -12,8 +12,6 @@ import { Dropdown, ListGroup} from 'flowbite-vue'
 <script>
 export default {
   props:['name'],
-  mounted() {
-    console.log('Component mounted.')
-  }
+
 }
 </script>

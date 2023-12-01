@@ -17,9 +17,11 @@ const app = createApp({});
 
 import ExampleComponent from './components/ExampleComponent.vue';
 import DropDown from './components/Drop-down.vue';
+import LinkItem from './components/List-GroupItemCustorm.vue';
 
 app.component('example-component', ExampleComponent);
 app.component('drop-down', DropDown);
+app.component('link-item', LinkItem);
 
 /**
  * The following block of code may be used to automatically register your
