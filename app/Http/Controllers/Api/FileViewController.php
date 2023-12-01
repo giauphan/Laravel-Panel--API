@@ -17,7 +17,7 @@ class FileViewController extends Controller
 
         if ($request->has('DatabaseID')) {
             $migration = MultiDatabase::find($request->input('DatabaseID'));
-            if (!$migration) {
+            if (! $migration) {
                 return response()->json([
                     'status' => 404,
                     'error' => 'DatabaseID not Found',
@@ -50,13 +50,12 @@ class FileViewController extends Controller
         ]);
     }
 
-
     public function ShowFile()
     {
         $filesByDatabase = [];
         $database_name = MultiDatabase::all();
         foreach ($database_name as $database) {
-            $name_array =   $database->id;
+            $name_array = $database->id;
             MultiMigrationService::switchToMulti($database);
             $files = FileData::all();
             $filesByDatabase[$name_array] = $files;
@@ -64,7 +63,7 @@ class FileViewController extends Controller
         }
 
         return view('storage.index', [
-            'storages' => $filesByDatabase
+            'storages' => $filesByDatabase,
         ]);
     }
 }

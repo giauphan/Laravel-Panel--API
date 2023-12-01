@@ -30,6 +30,6 @@ Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
-Route::middleware('auth')->prefix('files')->name('files.')->group( function () {
+Route::middleware('auth')->prefix('files')->name('files.')->group(function () {
     Route::get('show', [FileViewController::class, 'ShowFile'])->name('show');
 });
