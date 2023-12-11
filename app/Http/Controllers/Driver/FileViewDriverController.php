@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\FileData;
 use App\Models\MultiDatabase;
 use App\Service\MultiMigrationService;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class FileViewDriverController extends Controller
@@ -24,7 +25,7 @@ class FileViewDriverController extends Controller
                     'business_code' => $database->database,
                     'has_database_name' => $database->has_database_name,
                     'type_data' => 'folder',
-                    'created_at' => $database->created_at,
+                    'created_at' => Carbon::parse($database->created_at)->format('--M d.Y'),
                 ],
             ];
         }
@@ -47,7 +48,7 @@ class FileViewDriverController extends Controller
                 [
                     'business_code' => $value->business_code,
                     'type_data' => $value->type_data,
-                    'created_at' => $value->created_at,
+                    'created_at' => Carbon::parse($value->created_at)->format('--M d.Y'),
                 ],
             ];
         })->toArray();
