@@ -41,7 +41,7 @@ class FileViewDriverController extends Controller
             ->where('has_database_name', $folder)->first();
 
         MultiMigrationService::switchToMulti($database_name);
-        $files = collect(FileData::all());
+        $files = collect(FileData::query()->Limit(100)->get());
         $filesByDatabase = $files->map(function ($value) {
             return [
                 [
