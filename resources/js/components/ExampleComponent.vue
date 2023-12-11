@@ -22,7 +22,6 @@ import route from "ziggy-js";
         <TableHead>
             <TableCell>Name</TableCell>
             <TableCell>Type </TableCell>
-            <TableCell>Size</TableCell>
             <TableCell>Time</TableCell>
 
             <TableCell>
@@ -48,7 +47,6 @@ import route from "ziggy-js";
                     </template>
                 </TableCell>
                 <TableCell> {{ storage_data.type_data }}</TableCell>
-                <TableCell>{{ calculateFileSize(storage_data.file_data) }}</TableCell>
                 <TableCell> {{ storage_data.created_at }}</TableCell>
                 <TableCell>
                 </TableCell>
@@ -66,27 +64,12 @@ export default {
         },
     },
     methods: {
-        calculateFileSize(fileData) {
 
-            // Decode the Base64 string
-            const binaryData = btoa(fileData);
-
-            // Calculate the size in bytes
-            const fileSizeInBytes = binaryData.length;
-
-            // Format the size as needed (e.g., in kilobytes or megabytes)
-            const fileSizeFormatted = `${fileSizeInBytes} bytes`;
-
-            return fileSizeFormatted;
-
-        },
         goBack() {
             window.history.back();
         }
     },
-    // mounted() {
-    //     console.log("storages prop:", this.storages);
-    // },
+
 };
 </script>
 

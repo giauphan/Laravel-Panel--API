@@ -23,7 +23,6 @@ class FileViewDriverController extends Controller
                 [
                     'business_code' => $database->database,
                     'has_database_name' => $database->has_database_name,
-                    'Data' => '',
                     'type_data' => 'folder',
                 ],
             ];
@@ -46,7 +45,6 @@ class FileViewDriverController extends Controller
             return [
                 [
                     'business_code' => $value->business_code,
-                    'Data' => $value->Data,
                     'type_data' => $value->type_data,
                 ],
             ];
