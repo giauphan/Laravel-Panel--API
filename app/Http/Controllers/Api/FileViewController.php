@@ -50,20 +50,4 @@ class FileViewController extends Controller
         ]);
     }
 
-    public function ShowFile()
-    {
-        $filesByDatabase = [];
-        $database_name = MultiDatabase::all();
-        foreach ($database_name as $database) {
-            $name_array = $database->id;
-            MultiMigrationService::switchToMulti($database);
-            $files = FileData::all();
-            $filesByDatabase[$name_array] = $files;
-            MultiMigrationService::disconnectFromMulti();
-        }
-
-        return view('storage.index', [
-            'storages' => $filesByDatabase,
-        ]);
-    }
 }

@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\Api\FileViewController;
+use App\Http\Controllers\Driver\FileViewDriverController;
 use App\Http\Controllers\Public\PreviewController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -30,6 +30,7 @@ Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
-Route::middleware('auth')->prefix('files')->name('files.')->group(function () {
-    Route::get('show', [FileViewController::class, 'ShowFile'])->name('show');
+Route::middleware('auth')->prefix('files')->name('files.')->group( function () {
+    Route::get('',[FileViewDriverController::class,'index'])->name('index');
+    Route::get('{folder}',[FileViewDriverController::class,'show'])->name('show');
 });
