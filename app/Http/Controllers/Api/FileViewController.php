@@ -49,5 +49,4 @@ class FileViewController extends Controller
             'data' => FileResource::collection($file),
         ]);
     }
-
 }

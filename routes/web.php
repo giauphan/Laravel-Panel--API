@@ -30,7 +30,7 @@ Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
-Route::middleware('auth')->prefix('files')->name('files.')->group( function () {
-    Route::get('',[FileViewDriverController::class,'index'])->name('index');
-    Route::get('{folder}',[FileViewDriverController::class,'show'])->name('show');
+Route::middleware('auth')->prefix('files')->name('files.')->group(function () {
+    Route::get('', [FileViewDriverController::class, 'index'])->name('index');
+    Route::get('{folder}', [FileViewDriverController::class, 'show'])->name('show');
 });

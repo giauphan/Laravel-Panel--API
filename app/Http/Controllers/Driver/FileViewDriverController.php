@@ -7,8 +7,6 @@ use App\Models\FileData;
 use App\Models\MultiDatabase;
 use App\Service\MultiMigrationService;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Str;
 
 class FileViewDriverController extends Controller
 {
@@ -32,9 +30,10 @@ class FileViewDriverController extends Controller
         }
 
         return view('storage.index', [
-            'storages' => $filesByDatabase
+            'storages' => $filesByDatabase,
         ]);
     }
+
     public function show(string $folder)
     {
         $filesByDatabase = collect();
@@ -49,13 +48,13 @@ class FileViewDriverController extends Controller
                     'business_code' => $value->business_code,
                     'Data' => $value->Data,
                     'type_data' => $value->type_data,
-                ]
+                ],
             ];
         })->toArray();
         MultiMigrationService::disconnectFromMulti();
 
         return view('storage.index', [
-            'storages' => $filesByDatabase
+            'storages' => $filesByDatabase,
         ]);
     }
 }
