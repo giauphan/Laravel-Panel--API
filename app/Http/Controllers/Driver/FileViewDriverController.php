@@ -24,6 +24,7 @@ class FileViewDriverController extends Controller
                     'business_code' => $database->database,
                     'has_database_name' => $database->has_database_name,
                     'type_data' => 'folder',
+                    'created_at' => $database->created_at,
                 ],
             ];
         }
@@ -46,6 +47,7 @@ class FileViewDriverController extends Controller
                 [
                     'business_code' => $value->business_code,
                     'type_data' => $value->type_data,
+                    'created_at' => $value->created_at,
                 ],
             ];
         })->toArray();
