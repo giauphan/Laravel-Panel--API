@@ -9,8 +9,9 @@ import {
 } from 'flowbite-vue'
 import { ref } from 'vue';
 import route from "ziggy-js";
+import { usePage } from '@inertiajs/inertia-vue3';
 
-const isShowModal = ref(true)
+const isShowModal = ref(true);
 
 function closeModal() {
     isShowModal.value = false
@@ -18,19 +19,26 @@ function closeModal() {
 function showModal() {
     isShowModal.value = true
 }
+function setModal(value) {
+    isShowModal.value = value
+}
+const page = usePage();
+
+console.log(page.props)
 </script>
 
 <template>
     <div class="mb-5">
         <a :href="route('files.index')">Back</a>
     </div>
+  
     <modal v-if="isShowModal" @close="closeModal" size="5xl" allowfullscreen>
         <template #body>
             <div class="flex justify-center items-center">
-                 <iframe :src="'data:application/pdf;base64,' + preview.Data+ '#toolbar=1'"  width="100%" height="500px"
-            allowfullscreen></iframe>
+                <iframe :src="'data:application/pdf;base64,' + preview.Data + '#toolbar=1'" width="100%" height="500px"
+                    allowfullscreen></iframe>
             </div>
-           
+
 
         </template>
     </modal>
@@ -78,12 +86,26 @@ function showModal() {
 
 <script>
 export default {
-    props: ["storages", "pagination", "preview"],
+    props: {
+        storages: {
+            type: Array,
+            required: true,
+        },
+        pagination: {
+            type: Object,
+            required: true,
+        },
+        preview: {
+            type: Object,
+            default: 0,
+        },
+    },
     methods: {
         goBack() {
             window.history.back();
         }
 
     },
+
 };
 </script>
