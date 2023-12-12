@@ -32,7 +32,7 @@ class MultiMigrationService
         self::switchToDefault();
     }
 
-    private static function configureDatabaseConnection($connection, MultiDatabase $migration = null)
+    private static function configureDatabaseConnection($connection, ?MultiDatabase $migration = null)
     {
         $configName = $connection === 'mysql' ? 'mysql' : 'mysql2';
 
