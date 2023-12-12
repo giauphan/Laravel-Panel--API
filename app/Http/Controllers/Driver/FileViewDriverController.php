@@ -47,7 +47,7 @@ class FileViewDriverController extends Controller
 
         MultiMigrationService::switchToMulti($database_name);
         $files = FileData::query()
-            ->select('business_code', 'has_business_code',  'type_data')
+            ->select('business_code', 'has_business_code', 'type_data')
             ->paginate()
             ->withQueryString();
 
