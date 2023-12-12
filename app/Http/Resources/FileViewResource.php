@@ -6,18 +6,17 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
+/**
+ * @mixin \App\Models\FileData
+ */
 class FileViewResource extends JsonResource
 {
-    /**
-     * Transform the resource into an array.
-     *
-     * @return array<string, mixed>
-     */
+
     public function toArray(Request $request): array
     {
         return [
             'id' => $this->id,
-            'has_database_name' => $this->has_database_name,
+            'has_database_name' => $this->has_business_code,
             'business_code' => $this->business_code,
             'type_data' => $this->type_data,
             'created_at' => Carbon::parse($this->created_at)->format('--M d.Y'),
