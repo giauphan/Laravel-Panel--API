@@ -22,12 +22,10 @@ use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
 use Illuminate\Cookie\Middleware\EncryptCookies;
 use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
 use Illuminate\Routing\Middleware\SubstituteBindings;
-use Illuminate\Routing\Router;
 use Illuminate\Session\Middleware\AuthenticateSession;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\Support\Facades\Route;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
-
 
 class AdminPanelProvider extends PanelProvider
 {
@@ -50,20 +48,20 @@ class AdminPanelProvider extends PanelProvider
                 return $builder->items([
                     ...Pages\Dashboard::getNavigationItems(),
                     NavigationItem::make()
-                    ->label('Cài đặt')
-                    ->icon('heroicon-o-cog')
-                    ->url(ManageSetting::getUrl())
-                    ->isActiveWhen(fn () => Route::is('filament.admin.pages.settings.*')),
+                        ->label('Cài đặt')
+                        ->icon('heroicon-o-cog')
+                        ->url(ManageSetting::getUrl())
+                        ->isActiveWhen(fn () => Route::is('filament.admin.pages.settings.*')),
                     NavigationItem::make()
-                    ->label('Driver')
-                    ->icon('heroicon-s-circle-stack')
-                    ->url(route('files.index'))
-                    ->isActiveWhen(fn () => Route::is('filament.admin.pages.settings.*')),
+                        ->label('Driver')
+                        ->icon('heroicon-s-circle-stack')
+                        ->url(route('files.index'))
+                        ->isActiveWhen(fn () => Route::is('filament.admin.pages.settings.*')),
                     ...ClientResource::getNavigationItems(),
                     ...UserResource::getNavigationItems(),
                     ...FileDataResource::getNavigationItems(),
                     ...MultiDatabaseResource::getNavigationItems(),
-                    ...RoleResource::getNavigationItems()
+                    ...RoleResource::getNavigationItems(),
                 ]);
             })
             ->discoverWidgets(in: app_path('Filament/Widgets'), for: 'App\\Filament\\Widgets')
