@@ -2,7 +2,6 @@
 
 use App\Http\Controllers\Driver\FileViewDriverController;
 use App\Http\Controllers\Public\PreviewController;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -25,8 +24,6 @@ Route::get('/login', function () {
 })->name('login');
 
 Route::get('/preview', [PreviewController::class, 'index'])->name('preview');
-
-Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 

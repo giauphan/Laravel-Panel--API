@@ -4,8 +4,7 @@
  * building robust, powerful web applications using Vue and Laravel.
  */
 
-
-import { createApp } from 'vue';
+import { createApp } from 'vue'
 
 /**
  * Next, we will create a fresh Vue application instance. You may then begin
@@ -13,20 +12,19 @@ import { createApp } from 'vue';
  * to use in your application's views. An example is included for you.
  */
 
-const app = createApp({});
+const app = createApp({})
 
-
-import ExampleComponent from './components/ExampleComponent.vue';
-import DropDown from './components/Drop-down.vue';
-import LinkItem from './components/List-GroupItemCustorm.vue';
-import paginate from './components/paginate.vue';
+import ExampleComponent from './components/ExampleComponent.vue'
+import DropDown from './components/Drop-down.vue'
+import LinkItem from './components/List-GroupItemCustorm.vue'
+import paginate from './components/paginate.vue'
 import Paginate from 'vuejs-paginate'
 
 app.component('paginate', Paginate)
-app.component('example-component', ExampleComponent);
-app.component('drop-down', DropDown);
-app.component('link-item', LinkItem);
-app.component('paginate-page', paginate);
+app.component('example-component', ExampleComponent)
+app.component('drop-down', DropDown)
+app.component('link-item', LinkItem)
+app.component('paginate-page', paginate)
 
 /**
  * The following block of code may be used to automatically register your
@@ -46,4 +44,4 @@ app.component('paginate-page', paginate);
  * scaffolding. Otherwise, you will need to add an element yourself.
  */
 
-app.mount('#app');
+app.mount('#app')
