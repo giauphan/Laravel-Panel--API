@@ -29,7 +29,7 @@ class FileViewDriverController extends Controller
                 'created_at' => Carbon::parse($database->created_at)->format('--M d.Y'),
             ];
         });
-    
+
         $perPage = 10; // Set your desired items per page
         $currentPage = request('page', 1);
         $paginatedData = array_slice($filesByDatabase->toArray(), ($currentPage - 1) * $perPage, $perPage);
@@ -51,8 +51,6 @@ class FileViewDriverController extends Controller
             ->paginate()
             ->withQueryString();
         MultiMigrationService::disconnectFromMulti();
-        
-
 
         return view('storage.index', [
             'storages' => FileViewResource::collection($files),

@@ -16,7 +16,7 @@ class FileViewResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
-            'id'=>$this->id,
+            'id' => $this->id,
             'has_database_name' => $this->has_database_name,
             'business_code' => $this->business_code,
             'type_data' => $this->type_data,
