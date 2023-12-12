@@ -11,7 +11,6 @@ use Illuminate\Http\Resources\Json\JsonResource;
  */
 class FileViewResource extends JsonResource
 {
-
     public function toArray(Request $request): array
     {
         return [
