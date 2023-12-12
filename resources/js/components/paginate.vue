@@ -1,7 +1,6 @@
 <script setup>
 import { Link } from '@inertiajs/vue3';
-import { ArrowRightIcon } from "@vue-hero-icons/outline"
-
+import { ArrowNarrowLeftIcon } from '@vue-hero-icons/outline'
 </script>
 
 <template>
@@ -14,20 +13,7 @@ import { ArrowRightIcon } from "@vue-hero-icons/outline"
           'pagination-link flex h-8 items-center justify-center px-4 leading-tight': true,
           'bg-black text-white': page.active
         }">
-
-
-          <template v-if="page.label == 'Next &raquo;'">
-            <ArrowRightIcon size="1.5x" class="h-5 w-5" />
-          </template>
-
-          <template v-else-if="page.label === '&laquo; Previous' || page.label === '&laquo; Trang sau'">
-            <ArrowRightIcon class="h-5 w-5 text-primary-500 hover:bg-primary-100" />
-          </template>
-
-          <template v-else>
             {{ page.label }}
-          </template>
-
         </a>
 
 
