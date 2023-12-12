@@ -26,7 +26,6 @@ Route::get('/login', function () {
 
 Route::get('/preview', [PreviewController::class, 'index'])->name('preview');
 
-Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 

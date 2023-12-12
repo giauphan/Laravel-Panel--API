@@ -64,15 +64,9 @@
                         @else
                          
                             <Drop-down name="{{ Auth::user()->name }}">
-                                <link-item href_item="{{ route('logout') }}"
-                                    onclick="event.preventDefault();
-                                document.getElementById('logout-form').submit();">
-                                    {{ __('Logout') }}
-                                </link-item>
+                               
 
-                                <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
-                                    @csrf
-                                </form>
+                              
                             </Drop-down>
 
                         @endguest
