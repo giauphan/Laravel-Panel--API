@@ -44,19 +44,19 @@ class FileViewDriverController extends Controller
         $preview = $request->input('preview');
         $database_name = MultiDatabase::query()
             ->where('has_database_name', $folder)->first();
-            $database_id = $database_name->id;
- 
+        $database_id = $database_name->id;
+
         MultiMigrationService::switchToMulti($database_name);
         $files = FileData::query()
             ->select('business_code', 'has_business_code', 'type_data')
             ->paginate()
             ->withQueryString();
 
-            $preview_file = FileData::query()
-                ->when($preview, function (Builder $query) use ($preview) {
-                    $query->where('has_business_code', $preview);
-                })
-                ->firstOrFail();
+        $preview_file = FileData::query()
+            ->when($preview, function (Builder $query) use ($preview) {
+                $query->where('has_business_code', $preview);
+            })
+            ->firstOrFail();
 
         MultiMigrationService::disconnectFromMulti();
 
