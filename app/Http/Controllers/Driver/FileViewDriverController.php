@@ -8,14 +8,12 @@ use App\Models\FileData;
 use App\Models\MultiDatabase;
 use App\Service\MultiMigrationService;
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
 
 class FileViewDriverController extends Controller
 {
-    /**
-     * Handle the incoming request.
-     */
     public function index(Request $request)
     {
         $filesByDatabase = collect();
@@ -40,20 +38,30 @@ class FileViewDriverController extends Controller
         ]);
     }
 
-    public function show(string $folder)
+    public function show(string $folder, Request $request)
     {
 
+        $preview = $request->input('preview');
         $database_name = MultiDatabase::query()
             ->where('has_database_name', $folder)->first();
 
         MultiMigrationService::switchToMulti($database_name);
         $files = FileData::query()
+            ->select('business_code', 'has_business_code',  'type_data')
             ->paginate()
             ->withQueryString();
+
+        $preview = FileData::query()
+            ->when($preview, function (Builder $query) use ($preview) {
+                $query->where('has_business_code', $preview);
+            })
+            ->firstOrFail();
+
         MultiMigrationService::disconnectFromMulti();
 
         return view('storage.index', [
             'storages' => FileViewResource::collection($files),
+            'preview' => new FileViewResource($preview),
         ]);
     }
 }
