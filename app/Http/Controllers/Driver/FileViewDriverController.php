@@ -40,11 +40,8 @@ class FileViewDriverController extends Controller
 
     public function show(string $folder, Request $request)
     {
-
-        $preview = $request->input('preview');
         $database_name = MultiDatabase::query()
             ->where('has_database_name', $folder)->first();
-        $database_id = $database_name->id;
 
         MultiMigrationService::switchToMulti($database_name);
         $files = FileData::query()
@@ -52,17 +49,10 @@ class FileViewDriverController extends Controller
             ->paginate()
             ->withQueryString();
 
-        $preview_file = FileData::query()
-            ->when($preview, function (Builder $query) use ($preview) {
-                $query->where('has_business_code', $preview);
-            })
-            ->firstOrFail();
-
         MultiMigrationService::disconnectFromMulti();
-
         return view('storage.index', [
+            'folder'=>$database_name->id,
             'storages' => FileViewResource::collection($files),
-            'preview' => new FileViewResource($preview_file),
         ]);
     }
 }
