@@ -18,6 +18,7 @@ function closeModal() {
 function showModal() {
   isShowModal.value = true
 }
+
 </script>
 
 <template>
