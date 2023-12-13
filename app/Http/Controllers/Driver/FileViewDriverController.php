@@ -8,7 +8,6 @@ use App\Models\FileData;
 use App\Models\MultiDatabase;
 use App\Service\MultiMigrationService;
 use Carbon\Carbon;
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
 
@@ -50,8 +49,9 @@ class FileViewDriverController extends Controller
             ->withQueryString();
 
         MultiMigrationService::disconnectFromMulti();
+
         return view('storage.index', [
-            'folder'=>$database_name->id,
+            'folder' => $database_name->id,
             'storages' => FileViewResource::collection($files),
         ]);
     }
