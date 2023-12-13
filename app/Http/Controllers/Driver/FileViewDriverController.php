@@ -44,7 +44,7 @@ class FileViewDriverController extends Controller
     {
 
         $validated = Validator::validate($request->all(), [
-            'business_code' => ['nullable', 'string']
+            'business_code' => ['nullable', 'string'],
         ]);
 
         $database_name = MultiDatabase::query()
@@ -62,11 +62,11 @@ class FileViewDriverController extends Controller
         MultiMigrationService::disconnectFromMulti();
         $folder = [
             'id' => $database_name->id,
-            'has_database_name' => $folder
+            'has_database_name' => $folder,
         ];
 
         return view('storage.index', [
-            'folder' =>  $folder,
+            'folder' => $folder,
             'storages' => FileViewResource::collection($files),
         ]);
     }

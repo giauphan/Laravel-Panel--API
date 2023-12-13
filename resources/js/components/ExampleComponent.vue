@@ -31,35 +31,66 @@ function showModal() {
       </TableCell>
     </TableHead>
     <TableBody class="overflow-y-auto w-full">
-      <TableRow v-for="storage_data in storages.data ?? storages" class="w-full">
-        <modal v-if="isShowModal" @close="closeModal" size="5xl" allowfullscreen>
+      <TableRow
+        v-for="storage_data in storages.data ?? storages"
+        class="w-full"
+      >
+        <modal
+          v-if="isShowModal"
+          @close="closeModal"
+          size="5xl"
+          allowfullscreen
+        >
           <template #body>
             <div class="flex justify-center items-center">
-              <iframe :src="storage_data.url_preview + '&&DatabaseID=' + folder.id + '#toolbar=1'" width="100%"
-                height="500px" allowfullscreen></iframe>
+              <iframe
+                :src="
+                  storage_data.url_preview +
+                  '&&DatabaseID=' +
+                  folder.id +
+                  '#toolbar=1'
+                "
+                width="100%"
+                height="500px"
+                allowfullscreen
+              ></iframe>
             </div>
           </template>
         </modal>
 
         <TableCell class="flex items-center gap-5 flex-wrap w-full">
           <template v-if="storage_data.has_database_name">
-            <a :href="route('files.show', [storage_data.has_database_name])" class="flex gap-4">
-              <img class="" :src="'https://drive-thirdparty.googleusercontent.com/16/type/' +
-                (storage_data.type_data === 'pdf'
-                  ? 'application/pdf'
-                  : storage_data.type_data)
-                " :alt="storage_data.type_data" />
+            <a
+              :href="route('files.show', [storage_data.has_database_name])"
+              class="flex gap-4"
+            >
+              <img
+                class=""
+                :src="
+                  'https://drive-thirdparty.googleusercontent.com/16/type/' +
+                  (storage_data.type_data === 'pdf'
+                    ? 'application/pdf'
+                    : storage_data.type_data)
+                "
+                :alt="storage_data.type_data"
+              />
               {{ storage_data.business_code }}
             </a>
           </template>
           <template v-else>
-            <img class="" :src="'https://drive-thirdparty.googleusercontent.com/16/type/' +
-              (storage_data.type_data === 'pdf'
-                ? 'application/pdf'
-                : storage_data.type_data)
-              " :alt="storage_data.type_data" />
+            <img
+              class=""
+              :src="
+                'https://drive-thirdparty.googleusercontent.com/16/type/' +
+                (storage_data.type_data === 'pdf'
+                  ? 'application/pdf'
+                  : storage_data.type_data)
+              "
+              :alt="storage_data.type_data"
+            />
             <p @click="showModal" class="cursor-pointer">
-              {{ storage_data.business_code }} </p>
+              {{ storage_data.business_code }}
+            </p>
           </template>
         </TableCell>
         <TableCell>{{ storage_data.type_data }}</TableCell>
@@ -84,7 +115,7 @@ export default {
       required: true,
     },
     folder: {
-      type: Array
+      type: Array,
     },
   },
   methods: {
