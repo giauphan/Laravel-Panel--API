@@ -11,6 +11,8 @@ use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Validator;
 
 class FileViewDriverController extends Controller
 {
@@ -40,18 +42,31 @@ class FileViewDriverController extends Controller
 
     public function show(string $folder, Request $request)
     {
+
+        $validated = Validator::validate($request->all(), [
+            'business_code' => ['nullable', 'string']
+        ]);
+
         $database_name = MultiDatabase::query()
             ->where('has_database_name', $folder)->first();
 
         MultiMigrationService::switchToMulti($database_name);
         $files = FileData::query()
             ->select('business_code', 'has_business_code', 'type_data')
+            ->when(Arr::get($validated, 'business_code'), function (Builder $query, string $business_code) {
+                $query->where('business_code', 'like', "%$business_code%");
+            })
             ->paginate()
             ->withQueryString();
 
         MultiMigrationService::disconnectFromMulti();
+        $folder = [
+            'id' => $database_name->id,
+            'has_database_name' => $folder
+        ];
+
         return view('storage.index', [
-            'folder'=>$database_name->id,
+            'folder' =>  $folder,
             'storages' => FileViewResource::collection($files),
         ]);
     }

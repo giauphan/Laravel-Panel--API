@@ -9,7 +9,6 @@ import {
 } from 'flowbite-vue'
 import { ref } from 'vue'
 import route from 'ziggy-js'
-import { usePage } from '@inertiajs/inertia-vue3'
 
 const isShowModal = ref(false)
 
@@ -19,16 +18,9 @@ function closeModal() {
 function showModal() {
   isShowModal.value = true
 }
-const page = usePage()
-
 </script>
 
 <template>
-  <div class="mb-5">
-    <a :href="route('files.index')">Back</a>
-  </div>
-
-
   <Table hoverable>
     <TableHead>
       <TableCell>Name</TableCell>
@@ -43,8 +35,8 @@ const page = usePage()
         <modal v-if="isShowModal" @close="closeModal" size="5xl" allowfullscreen>
           <template #body>
             <div class="flex justify-center items-center">
-              <iframe :src="storage_data.url_preview+'&&DatabaseID='+folder + '#toolbar=1'" width="100%" height="500px"
-                allowfullscreen></iframe>
+              <iframe :src="storage_data.url_preview + '&&DatabaseID=' + folder.id + '#toolbar=1'" width="100%"
+                height="500px" allowfullscreen></iframe>
             </div>
           </template>
         </modal>
@@ -60,14 +52,14 @@ const page = usePage()
               {{ storage_data.business_code }}
             </a>
           </template>
-          <template v-else >
+          <template v-else>
             <img class="" :src="'https://drive-thirdparty.googleusercontent.com/16/type/' +
               (storage_data.type_data === 'pdf'
                 ? 'application/pdf'
                 : storage_data.type_data)
               " :alt="storage_data.type_data" />
-          <p @click="showModal" class="cursor-pointer">
-              {{ storage_data.business_code }}   </p>
+            <p @click="showModal" class="cursor-pointer">
+              {{ storage_data.business_code }} </p>
           </template>
         </TableCell>
         <TableCell>{{ storage_data.type_data }}</TableCell>
@@ -92,7 +84,7 @@ export default {
       required: true,
     },
     folder: {
-      type: Number
+      type: Array
     },
   },
   methods: {
