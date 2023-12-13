@@ -9,7 +9,6 @@ import {
 } from 'flowbite-vue'
 import { ref } from 'vue'
 import route from 'ziggy-js'
-import { usePage } from '@inertiajs/inertia-vue3'
 
 const isShowModal = ref(false)
 
@@ -19,14 +18,9 @@ function closeModal() {
 function showModal() {
   isShowModal.value = true
 }
-const page = usePage()
 </script>
 
 <template>
-  <div class="mb-5">
-    <a :href="route('files.index')">Back</a>
-  </div>
-
   <Table hoverable>
     <TableHead>
       <TableCell>Name</TableCell>
@@ -53,7 +47,7 @@ const page = usePage()
                 :src="
                   storage_data.url_preview +
                   '&&DatabaseID=' +
-                  folder +
+                  folder.id +
                   '#toolbar=1'
                 "
                 width="100%"
@@ -121,7 +115,7 @@ export default {
       required: true,
     },
     folder: {
-      type: Number,
+      type: Array,
     },
   },
   methods: {

@@ -62,7 +62,10 @@
                                 </li>
                             @endif
                         @else
-                         
+                        <li>
+                            <a class="text-gray-600 hover:text-gray-900"
+                                href="/admin">Page admin</a>
+                        </li>
                             <Drop-down name="{{ Auth::user()->name }}">
                                
 
