@@ -1,7 +1,6 @@
 <script setup>
 import { Button, Input } from 'flowbite-vue'
-import route from 'ziggy-js'
-import { useForm } from '@inertiajs/vue3'
+
 </script>
 
 <template>
@@ -13,8 +12,7 @@ import { useForm } from '@inertiajs/vue3'
         fill="none"
         stroke="currentColor"
         viewBox="0 0 24 24"
-        xmlns="http://www.w3.org/2000/svg"
-      >
+        xmlns="http://www.w3.org/2000/svg">
         <path
           d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
           stroke-linecap="round"
@@ -32,11 +30,5 @@ import { useForm } from '@inertiajs/vue3'
 <script>
 export default {
   props: ['folders'],
-  methods: {
-    submit() {
-      console.log(folders)
-      // router.get(route('files.show', { folder: folders }), form);
-    },
-  },
 }
 </script>
