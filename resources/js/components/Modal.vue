@@ -1,24 +1,22 @@
 <script setup>
-import {
-    Modal,
-} from 'flowbite-vue'
+import { Modal } from 'flowbite-vue'
 
 const handleOpen = () => {
-    if (onClose) {
-        onClose()
-    }
+  if (onClose) {
+    onClose()
+  }
 }
 </script>
 <template>
-    <Modal v-if="isShowModal" @close="handleOpen" size="5xl" allowfullscreen>
-        <template #body>
-            <slot></slot>
-        </template>
-    </modal>
+  <Modal v-if="isShowModal" @close="handleOpen" size="5xl" allowfullscreen>
+    <template #body>
+      <slot></slot>
+    </template>
+  </Modal>
 </template>
 
 <script>
 export default {
-    props: ['isShowModal','onClose'],
+  props: ['isShowModal', 'onClose'],
 }
 </script>
