@@ -1,11 +1,5 @@
 <script setup>
-import {
-  Table,
-  TableHead,
-  TableCell,
-  TableBody,
-  TableRow,
-} from 'flowbite-vue'
+import { Table, TableHead, TableCell, TableBody, TableRow } from 'flowbite-vue'
 import { ref } from 'vue'
 import route from 'ziggy-js'
 import { FolderIcon } from '@heroicons/vue/24/solid'
@@ -14,12 +8,12 @@ import ModalComponent from './ModalComponent.vue'
 const isShowModal = ref(false)
 
 const handleOpen = () => {
-  isShowModal.value = true;
-};
+  isShowModal.value = true
+}
 
 const onClose = () => {
-  isShowModal.value = false;
-};
+  isShowModal.value = false
+}
 </script>
 
 <template>
@@ -33,16 +27,24 @@ const onClose = () => {
       </TableCell>
     </TableHead>
     <TableBody class="overflow-y-auto w-full">
-      <TableRow v-for="storage_data in storages.data ?? storages" class="w-full">
+      <TableRow
+        v-for="storage_data in storages.data ?? storages"
+        class="w-full"
+      >
         <modal-component :isShowModal="isShowModal" :onClose="onClose">
           <div class="flex justify-center items-center">
-            <iframe :src="storage_data.url_preview +
-              '&&DatabaseID=' +
-              folder.id +
-              '#toolbar=1'
-              " width="100%" height="500px" allowfullscreen></iframe>
+            <iframe
+              :src="
+                storage_data.url_preview +
+                '&&DatabaseID=' +
+                folder.id +
+                '#toolbar=1'
+              "
+              width="100%"
+              height="500px"
+              allowfullscreen
+            ></iframe>
           </div>
-
         </modal-component>
 
         <TableCell class="flex items-center gap-5 flex-wrap w-full">
@@ -71,11 +73,16 @@ const onClose = () => {
             </a>
           </template>
           <template v-else>
-            <img class="" :src="'https://drive-thirdparty.googleusercontent.com/16/type/' +
-              (storage_data.type_data === 'pdf'
-                ? 'application/pdf'
-                : storage_data.type_data)
-              " :alt="storage_data.type_data" />
+            <img
+              class=""
+              :src="
+                'https://drive-thirdparty.googleusercontent.com/16/type/' +
+                (storage_data.type_data === 'pdf'
+                  ? 'application/pdf'
+                  : storage_data.type_data)
+              "
+              :alt="storage_data.type_data"
+            />
             <p @click="handleOpen" class="cursor-pointer">
               {{ storage_data.business_code }}
             </p>
