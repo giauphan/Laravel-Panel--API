@@ -1,22 +1,18 @@
 <script setup>
-import {
-  Table,
-  TableHead,
-  TableCell,
-  TableBody,
-  TableRow,
-  Modal,
-} from 'flowbite-vue'
+import { Table, TableHead, TableCell, TableBody, TableRow } from 'flowbite-vue'
 import { ref } from 'vue'
 import route from 'ziggy-js'
+import { FolderIcon } from '@heroicons/vue/24/solid'
+import ModalComponent from './ModalComponent.vue'
 
 const isShowModal = ref(false)
 
-function closeModal() {
-  isShowModal.value = false
-}
-function showModal() {
+const handleOpen = () => {
   isShowModal.value = true
+}
+
+const onClose = () => {
+  isShowModal.value = false
 }
 </script>
 
@@ -35,28 +31,21 @@ function showModal() {
         v-for="storage_data in storages.data ?? storages"
         class="w-full"
       >
-        <modal
-          v-if="isShowModal"
-          @close="closeModal"
-          size="5xl"
-          allowfullscreen
-        >
-          <template #body>
-            <div class="flex justify-center items-center">
-              <iframe
-                :src="
-                  storage_data.url_preview +
-                  '&&DatabaseID=' +
-                  folder.id +
-                  '#toolbar=1'
-                "
-                width="100%"
-                height="500px"
-                allowfullscreen
-              ></iframe>
-            </div>
-          </template>
-        </modal>
+        <modal-component :isShowModal="isShowModal" :onClose="onClose">
+          <div class="flex justify-center items-center">
+            <iframe
+              :src="
+                storage_data.url_preview +
+                '&&DatabaseID=' +
+                folder.id +
+                '#toolbar=1'
+              "
+              width="100%"
+              height="500px"
+              allowfullscreen
+            ></iframe>
+          </div>
+        </modal-component>
 
         <TableCell class="flex items-center gap-5 flex-wrap w-full">
           <template v-if="storage_data.has_database_name">
@@ -64,16 +53,22 @@ function showModal() {
               :href="route('files.show', [storage_data.has_database_name])"
               class="flex gap-4"
             >
-              <img
-                class=""
-                :src="
-                  'https://drive-thirdparty.googleusercontent.com/16/type/' +
-                  (storage_data.type_data === 'pdf'
-                    ? 'application/pdf'
-                    : storage_data.type_data)
-                "
-                :alt="storage_data.type_data"
-              />
+              <template v-if="storage_data.type_data == 'folder'">
+                <FolderIcon class="h-5 w-5" />
+              </template>
+              <template v-else>
+                <img
+                  class=""
+                  :src="
+                    'https://drive-thirdparty.googleusercontent.com/16/type/' +
+                    (storage_data.type_data === 'pdf'
+                      ? 'application/pdf'
+                      : storage_data.type_data)
+                  "
+                  :alt="storage_data.type_data"
+                />
+              </template>
+
               {{ storage_data.business_code }}
             </a>
           </template>
@@ -88,7 +83,7 @@ function showModal() {
               "
               :alt="storage_data.type_data"
             />
-            <p @click="showModal" class="cursor-pointer">
+            <p @click="handleOpen" class="cursor-pointer">
               {{ storage_data.business_code }}
             </p>
           </template>
@@ -115,7 +110,7 @@ export default {
       required: true,
     },
     folder: {
-      type: Array,
+      type: Object,
     },
   },
   methods: {

@@ -1,7 +1,5 @@
 <script setup>
 import { Button, Input } from 'flowbite-vue'
-import route from 'ziggy-js'
-import { useForm } from '@inertiajs/vue3'
 </script>
 
 <template>
@@ -32,11 +30,5 @@ import { useForm } from '@inertiajs/vue3'
 <script>
 export default {
   props: ['folders'],
-  methods: {
-    submit() {
-      console.log(folders)
-      // router.get(route('files.show', { folder: folders }), form);
-    },
-  },
 }
 </script>

@@ -1,6 +1,5 @@
 <script setup>
-import { Link } from '@inertiajs/vue3'
-import { ArrowNarrowLeftIcon } from '@vue-hero-icons/outline'
+import { ArrowLeftIcon, ArrowRightIcon } from '@heroicons/vue/24/solid'
 </script>
 
 <template>
@@ -16,7 +15,15 @@ import { ArrowNarrowLeftIcon } from '@vue-hero-icons/outline'
             'bg-black text-white': page.active,
           }"
         >
-          {{ page.label }}
+          <template v-if="page.label.includes('laquo;')">
+            <ArrowLeftIcon class="h5 w-5" />
+          </template>
+          <template v-else-if="page.label.includes('raquo;')">
+            <ArrowRightIcon class="h5 w-5" />
+          </template>
+          <template v-else>
+            {{ getPageLabel(page) }}
+          </template>
         </a>
       </li>
     </ul>
@@ -37,6 +44,16 @@ export default {
       isActive,
       getPaginationClasses,
     }
+  },
+  methods: {
+    getPageLabel(page) {
+      if (page.url) {
+        return page.label
+      } else {
+        const pageNumber = parseInt(page.label)
+        return isNaN(pageNumber) ? '' : pageNumber
+      }
+    },
   },
 }
 </script>
