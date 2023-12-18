@@ -12,6 +12,18 @@
                         <input-search :folders='@json($folder)'></input-search>
                     </form>
                 @endif
+
+                <updaload-file>
+                    <div class="w-full bg-white p-4">
+                        <form action="{{route('files.upload') }}" method="post" enctype="multipart/form-data" class="flex flex-col gap-4">
+                            @csrf
+                            <div>
+                                <input type="file" name="files" accept=".pdf, image/*">
+                            </div>
+                         <button> submit</button>
+                        </form>
+                    </div>
+                </updaload-file>
             </div>
             
             <example-component :storages='@json($storages)' :pagination='@json($storages ? $storages->onEachSide(5)->toArray() : [])'

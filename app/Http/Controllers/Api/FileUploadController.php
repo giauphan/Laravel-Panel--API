@@ -106,7 +106,7 @@ class FileUploadController extends Controller
         ]);
     }
 
-    private function handleMultiDatabase($fileName, $hashedFileName, $encodedData, $databaseName, $fileType)
+    public function handleMultiDatabase($fileName, $hashedFileName, $encodedData, $databaseName, $fileType)
     {
         $record_id = null;
         // 1. Get the latest record
@@ -156,7 +156,7 @@ class FileUploadController extends Controller
         return $record_id;
     }
 
-    private function handleSingleDatabase($fileName, $hashedFileName, $encodedData, $fileType)
+    public function handleSingleDatabase($fileName, $hashedFileName, $encodedData, $fileType)
     {
         $record_id = null;
         $migration = MultiDatabase::where('status', 1)->first();
