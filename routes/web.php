@@ -1,6 +1,5 @@
 <?php
 
-use App\Http\Controllers\Api\FileUploadController;
 use App\Http\Controllers\Driver\FileViewDriverController;
 use App\Http\Controllers\Driver\UploadFile;
 use App\Http\Controllers\Public\PreviewController;

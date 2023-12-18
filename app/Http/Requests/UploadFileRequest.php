@@ -10,8 +10,7 @@ class UploadFileRequest extends FormRequest
     {
         return [
 
-            'files' => ['required','file', 'mimes:pdf,png,jpg,svg', 'max:2048'],
+            'files' => ['required', 'file', 'mimes:pdf,png,jpg,svg', 'max:2048'],
         ];
     }
-
 }

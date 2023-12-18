@@ -7,7 +7,6 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\UploadFileRequest;
 use App\Models\MultiDatabase;
 use App\Settings\SettingServerStorage;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 
@@ -37,7 +36,6 @@ class UploadFile extends Controller
         $fileName = $validator['file_name'] ?? $file->getClientOriginalName();
         $fileType = $file->getClientMimeType();
 
-
         $encodedData = base64_encode($fileContents);
 
         $hashedFileName = Hash::make($fileName);
@@ -58,28 +56,27 @@ class UploadFile extends Controller
         return back()->with('succes', 'upload success');
     }
 
-
     private function calculateTotalSize()
-{
-    $migration = MultiDatabase::where('status', 1)->first();
+    {
+        $migration = MultiDatabase::where('status', 1)->first();
 
-    return DB::table('information_schema.tables')
-        ->selectRaw('ROUND(SUM(data_length + index_length) / 1024 / 1024, 2) AS size_mb')
-        ->where('table_schema', $migration ? $migration->database : config('database.connections.mysql.database'))
-        ->first()->size_mb;
-}
-
-private function generateShareLink($record)
-{
-    $share = route('preview', ['id' => $record->has_business_code]);
-    $migration = MultiDatabase::where('status', 1)
-        ->orderBy('id', 'desc')
-        ->first();
-
-    if ($migration) {
-        $share .= '&&DatabaseID=' . $migration->id;
+        return DB::table('information_schema.tables')
+            ->selectRaw('ROUND(SUM(data_length + index_length) / 1024 / 1024, 2) AS size_mb')
+            ->where('table_schema', $migration ? $migration->database : config('database.connections.mysql.database'))
+            ->first()->size_mb;
     }
 
-    return $share;
-}
+    private function generateShareLink($record)
+    {
+        $share = route('preview', ['id' => $record->has_business_code]);
+        $migration = MultiDatabase::where('status', 1)
+            ->orderBy('id', 'desc')
+            ->first();
+
+        if ($migration) {
+            $share .= '&&DatabaseID='.$migration->id;
+        }
+
+        return $share;
+    }
 }

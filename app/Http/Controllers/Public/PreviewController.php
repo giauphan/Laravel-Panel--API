@@ -56,8 +56,8 @@ class PreviewController extends Controller
     private function getContentDisposition($file, $filename)
     {
         $disposition = $file->type_data === 'image/png' || $file->type_data === 'application/pdf'
-            ? 'inline; filename="' . $filename . '"'
-            : 'inline; filename="' . $filename . '.pdf"';
+            ? 'inline; filename="'.$filename.'"'
+            : 'inline; filename="'.$filename.'.pdf"';
 
         return $disposition;
     }
@@ -71,7 +71,7 @@ class PreviewController extends Controller
             'png' => 'image/png',
         ];
 
-        return $contentTypes[$file->type_data == "pdf" ? 'application/pdf' : $file->type_data] ?? 'application/octet-stream';
+        return $contentTypes[$file->type_data == 'pdf' ? 'application/pdf' : $file->type_data] ?? 'application/octet-stream';
     }
 
     private function getFilename($file)
