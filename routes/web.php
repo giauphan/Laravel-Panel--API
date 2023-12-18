@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Driver\FileViewDriverController;
+use App\Http\Controllers\Driver\UploadFile;
 use App\Http\Controllers\Public\PreviewController;
 use Illuminate\Support\Facades\Route;
 
@@ -30,4 +31,5 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 Route::middleware('auth')->prefix('files')->name('files.')->group(function () {
     Route::get('', [FileViewDriverController::class, 'index'])->name('index');
     Route::get('{folder}', [FileViewDriverController::class, 'show'])->name('show');
+    Route::post('upload', [UploadFile::class, 'index'])->name('upload');
 });

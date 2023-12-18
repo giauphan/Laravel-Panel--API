@@ -19,52 +19,63 @@ class PreviewController extends Controller
 
             if ($file) {
                 $decodedData = base64_decode($file->Data);
-
-                $filename = $this->getFilename($file);
-                if ($file->type_data === 'image/png' || $file->type_data === 'application/pdf') {
-                    $headers = [
-                        'Content-Disposition' => 'inline; filename="'.$filename.'"',
-                    ];
-                } else {
-                    $headers = [
-                        'Content-Disposition' => 'inline; filename="'.$filename.'.pdf"',
-                    ];
-                }
-
-                if ($file->type_data === 'image/png' || $file->type_data == 'png') {
-                    $headers['Content-Type'] = 'image/png';
-                } elseif ($file->type_data === 'image/svg') {
-                    $headers['Content-Type'] = 'image/svg+xml';
-                } else {
-                    $headers['Content-Type'] = 'application/pdf';
-                }
+                $headers = $this->getHeaders($file);
 
                 return Response::make($decodedData, 200, $headers);
             }
-
-            // return abort(404);
         }
     }
 
     private function findFileById(Request $request, $id)
     {
-
         if ($request->has('DatabaseID')) {
             $migration = MultiDatabase::findOrFail($request->input('DatabaseID'));
             MultiMigrationService::switchToMulti($migration);
-            $fileQuery = FileData::query()->where('has_business_code', 'like', "%$id%");
-            $file = $fileQuery->firstOrFail();
+        }
+        $fileQuery = FileData::query()->where('has_business_code', 'like', "%$id%");
+        $file = $fileQuery->firstOrFail();
 
-        } else {
-            $fileQuery = FileData::query()->where('has_business_code', 'like', "%$id%");
-            $file = $fileQuery->firstOrFail();
+        if ($request->has('DatabaseID')) {
+            MultiMigrationService::disconnectFromMulti();
         }
 
         return $file;
     }
 
+    private function getHeaders($file)
+    {
+        $filename = $this->getFilename($file);
+        $headers = [
+            'Content-Disposition' => $this->getContentDisposition($file, $filename),
+            'Content-Type' => $this->getContentType($file),
+        ];
+
+        return $headers;
+    }
+
+    private function getContentDisposition($file, $filename)
+    {
+        $disposition = $file->type_data === 'image/png' || $file->type_data === 'application/pdf'
+            ? 'inline; filename="'.$filename.'"'
+            : 'inline; filename="'.$filename.'.pdf"';
+
+        return $disposition;
+    }
+
+    private function getContentType($file)
+    {
+        $contentTypes = [
+            'image/png' => 'image/png',
+            'image/svg' => 'image/svg+xml',
+            'application/pdf' => 'application/pdf',
+            'png' => 'image/png',
+        ];
+
+        return $contentTypes[$file->type_data == 'pdf' ? 'application/pdf' : $file->type_data] ?? 'application/octet-stream';
+    }
+
     private function getFilename($file)
     {
-        return ! empty($file->business_code) ? $file->business_code : $file->has_business_code;
+        return $file->business_code ?: $file->has_business_code;
     }
 }
