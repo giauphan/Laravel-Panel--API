@@ -126,7 +126,7 @@ class FileUploadController extends Controller
         $database_multi = MultiDatabase::create(
             [
                 'database' => $newDatabaseName,
-                'has_database_name' => Str::slug(Hash::make($newDatabaseName),"-"),
+                'has_database_name' => Str::slug(Hash::make($newDatabaseName), '-'),
                 'host' => '127.0.0.1',
                 'username' => env('DB_USERNAME'),
                 'password' => env('DB_PASSWORD'),
