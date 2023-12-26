@@ -9,6 +9,8 @@ use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
 
 class MultiDatabaseResource extends Resource
 {
@@ -26,6 +28,11 @@ class MultiDatabaseResource extends Resource
                 Forms\Components\TextInput::make('database')
                     ->required()
                     ->maxLength(255),
+                Forms\Components\Textarea::make('has_database_name')
+                    ->required()
+                    ->dehydrateStateUsing(fn ($state) => Str::slug(Hash::make($state),"-"))
+                    ->maxLength(65535)
+                    ->columnSpanFull(),
                 Forms\Components\TextInput::make('port')
                     ->required()
                     ->maxLength(255),
@@ -50,6 +57,8 @@ class MultiDatabaseResource extends Resource
                 Tables\Columns\TextColumn::make('host')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('database')
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('has_database_name')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('port')
                     ->searchable(),
