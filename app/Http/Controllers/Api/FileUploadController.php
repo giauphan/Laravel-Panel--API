@@ -85,9 +85,9 @@ class FileUploadController extends Controller
         if ($record['status'] == 429) {
             return response()->json([
                 'status' => 200,
+                'id' => $record['id'],
+                'url_preview' => $record['url_preview'],
                 'errors' => [
-                    'id' => $record['id'],
-                    'url_preview' => $record['url_preview'],
                     'files' => ['The files have a duplicate business_code.'],
                 ],
                 'message' => 'Duplicate record',
