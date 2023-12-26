@@ -174,7 +174,7 @@ class FileUploadController extends Controller
             if ($record->exists) {
                 return [
                     'status' => 429,
-                    'database' => $migration->database
+                    'database' => $migration->database,
                 ];
             }
             $record->fill([
