@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Str;
 
 class FileUploadController extends Controller
 {
@@ -125,7 +126,7 @@ class FileUploadController extends Controller
         $database_multi = MultiDatabase::create(
             [
                 'database' => $newDatabaseName,
-                'has_database_name' => Hash::make($newDatabaseName),
+                'has_database_name' => Str::slug(Hash::make($newDatabaseName),"-"),
                 'host' => '127.0.0.1',
                 'username' => env('DB_USERNAME'),
                 'password' => env('DB_PASSWORD'),
