@@ -174,6 +174,7 @@ class FileUploadController extends Controller
 
             if ($record->exists) {
                 $share = route('preview', ['id' => $record->has_business_code]);
+
                 return [
                     'status' => 429,
                     'id' => $record->id,
