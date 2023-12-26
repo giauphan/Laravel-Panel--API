@@ -86,7 +86,8 @@ class FileUploadController extends Controller
             return response()->json([
                 'status' => 200,
                 'errors' => [
-                    'database' => $record['database'] ?? null,
+                    'id' => $record->id,
+                    'url_preview' => $record->share,
                     'files' => ['The files have a duplicate business_code.'],
                 ],
                 'message' => 'Duplicate record',
