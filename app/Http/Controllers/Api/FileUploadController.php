@@ -172,7 +172,10 @@ class FileUploadController extends Controller
             $record = FileData::firstOrNew(['business_code' => $fileName]);
 
             if ($record->exists) {
-                return null;
+                return [
+                    'status' => 429,
+                    'database' => $migration->database
+                ];
             }
             $record->fill([
                 'has_business_code' => (string) $hashedFileName,
