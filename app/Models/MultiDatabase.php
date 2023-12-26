@@ -9,5 +9,5 @@ class MultiDatabase extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['host', 'database', 'username', 'password', 'port', 'status'];
+    protected $fillable = ['host', 'has_database_name','database', 'username', 'password', 'port', 'status'];
 }
