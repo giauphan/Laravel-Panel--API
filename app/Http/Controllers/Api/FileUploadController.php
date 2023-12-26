@@ -86,7 +86,7 @@ class FileUploadController extends Controller
             return response()->json([
                 'status' => 200,
                 'errors' => [
-                    'database' => $record['database'],
+                    'database' => $record['database'] ?? null,
                     'files' => ['The files have a duplicate business_code.'],
                 ],
                 'message' => 'Duplicate record',
@@ -192,7 +192,6 @@ class FileUploadController extends Controller
             if ($record->exists) {
                 return [
                     'status' => 429,
-                    'database' => $migration->database,
                 ];
             }
             $record->fill([
