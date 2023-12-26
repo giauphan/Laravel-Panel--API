@@ -121,9 +121,9 @@ class FileUploadController extends Controller
         $newDatabaseName = $databaseName.'_bcdnscanner_'.($newRecord ? ($newRecord->id + 1) : 1);
 
         // 4. Ensure the new database name is unique
-        $database_multi = MultiDatabase::updateOrCreate(
-            ['database' => $newDatabaseName],
+        $database_multi = MultiDatabase::create(
             [
+                'database' => $newDatabaseName,
                 'host' => '127.0.0.1',
                 'username' => env('DB_USERNAME'),
                 'password' => env('DB_PASSWORD'),
