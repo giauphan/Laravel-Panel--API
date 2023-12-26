@@ -21,7 +21,7 @@ Route::middleware(['auth:api', 'scopes:place-file-upload'])->group(function () {
     Route::get('user', function (Request $request) {
         return $request->user();
     });
-    Route::middleware('throttle:35,1')->prefix('file')->group(function () {
+    Route::prefix('file')->group(function () {
         Route::get('show', [FileViewController::class, '__invoke']);
         Route::post('upload', [FileUploadController::class, 'index']);
         Route::post('update', [FileUploadController::class, 'index']);
