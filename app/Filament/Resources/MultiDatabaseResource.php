@@ -30,7 +30,7 @@ class MultiDatabaseResource extends Resource
                     ->maxLength(255),
                 Forms\Components\Textarea::make('has_database_name')
                     ->required()
-                    ->dehydrateStateUsing(fn ($state) => Str::slug(Hash::make($state),"-"))
+                    ->dehydrateStateUsing(fn ($state) => Str::slug(Hash::make($state), '-'))
                     ->maxLength(65535)
                     ->columnSpanFull(),
                 Forms\Components\TextInput::make('port')
