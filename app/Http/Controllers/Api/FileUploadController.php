@@ -87,7 +87,7 @@ class FileUploadController extends Controller
                 'status' => 200,
                 'errors' => [
                     'id' => $record['id'],
-                    'url_preview' => $record['share'],
+                    'url_preview' => $record['url_preview'],
                     'files' => ['The files have a duplicate business_code.'],
                 ],
                 'message' => 'Duplicate record',
